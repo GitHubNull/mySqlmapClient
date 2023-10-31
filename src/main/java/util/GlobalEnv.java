@@ -679,7 +679,6 @@ public class GlobalEnv {
 
         Option currentUserOption = Option.builder()
                 .longOpt("current-user")
-                .argName("currentUser")
                 .desc("Retrieve DBMS current user")
                 .build();
 
