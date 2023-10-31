@@ -1,4 +1,4 @@
-package sqlmapApi.requestsBody;
+package jsonModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

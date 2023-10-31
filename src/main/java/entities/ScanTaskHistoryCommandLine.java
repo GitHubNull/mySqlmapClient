@@ -5,22 +5,18 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class OptionsCommandLine implements Comparable<OptionsCommandLine>, Serializable {
+public class ScanTaskHistoryCommandLine implements Comparable<ScanTaskHistoryCommandLine>, Serializable {
     private final static long serialVersionUID = 1;
     int id;
-    Boolean wasDefault;
-    String tag;
     String commandLineStr;
 
-    public OptionsCommandLine(int id, String tag, String commandLineStr, Boolean wasDefault) {
+    public ScanTaskHistoryCommandLine(int id, String commandLineStr) {
         this.id = id;
-        this.wasDefault = wasDefault;
-        this.tag = tag;
         this.commandLineStr = commandLineStr;
     }
 
     @Override
-    public int compareTo(OptionsCommandLine o) {
+    public int compareTo(ScanTaskHistoryCommandLine o) {
         Integer id = this.getId();
         return id.compareTo(o.getId());
     }

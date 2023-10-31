@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
-public class CommandLineTableModel extends AbstractTableModel {
+public class ScanTaskHistoryCommandLineTableModel extends AbstractTableModel {
     List<ScanTaskHistoryCommandLine> scanTaskHistoryCommandLineList = GlobalEnv.scanTaskHistoryCommandLineList;
     static final int STATIC_COLUMN_COUNT = 4;
 

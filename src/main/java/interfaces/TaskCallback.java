@@ -1,7 +1,7 @@
 package interfaces;
 
 public interface TaskCallback {
-    void onComplete(String result);
-    void onError(String error);
-    void onCancel();
+    void onConfigComplete(String result);
+    void onConfigError(String error);
+    void onConfigCancel();
 }

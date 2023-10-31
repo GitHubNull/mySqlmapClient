@@ -1,7 +1,7 @@
 package ui.component;
 
 import entities.OptionsCommandLine;
-import models.CommandLineTableModel;
+import table_models.CommandLineTableModel;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package utils;
+package util;
 
 import burp.BurpExtender;
 import org.apache.commons.io.FileUtils;
@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import static utils.GlobalStaticsVar.TMP_REQUEST_FILE_DIR_PATH;
+import static util.GlobalEnv.TMP_REQUEST_FILE_DIR_PATH;
 
 public class TmpRequestFileHelper {
 

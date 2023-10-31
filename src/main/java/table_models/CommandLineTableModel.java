@@ -1,8 +1,9 @@
-package models;
+package table_models;
 
 import entities.CommandLineColumnName;
 import entities.CommandLineColumnNameIndex;
 import entities.OptionsCommandLine;
+
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;

@@ -1,7 +1,7 @@
-package utils;
+package util;
 
 import burp.BurpExtender;
-import sqlmapApi.requestsBody.ScanConfiguration;
+import jsonModel.ScanConfiguration;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -112,6 +112,20 @@ public class MyStringUtil {
                 "</html>");
 
         return stringBuilder.toString();
+    }
+
+    public static boolean isValidIPAddress(String host) {
+        String ipv4Pattern = "^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$";
+        return host.matches(ipv4Pattern);
+    }
+
+    public static boolean isValidPort(String port) {
+        try {
+            int intPort = Integer.parseInt(port);
+            return intPort >= 0 && intPort <= 65535;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package ui;
+package ui.component;
 
 import entities.ScanTaskHistoryCommandLine;
 import excutors.ScanTasksWithConfigeAllTimeExecutor;
@@ -103,7 +103,8 @@ public class ScanConfigurationDialog  extends JDialog {
         buttonOK = new JButton("OK");
         buttonCancel = new JButton("Cancel");
 
-        buttonOK.addActionListener(e->buttonOKPerformAction(e));
+        buttonOK.addActionListener(this::buttonOKPerformAction);
+        buttonCancel.addActionListener(this::buttonCancelPerformAction);
 
         downPanel.add(buttonOK);
         downPanel.add(buttonCancel);
@@ -134,6 +135,7 @@ public class ScanConfigurationDialog  extends JDialog {
 
     private void buttonOKPerformAction(ActionEvent e) {
         if (textArea ==  null || textArea.getText().trim().isEmpty()){
+            dispose();
             return;
         }
 
@@ -145,6 +147,7 @@ public class ScanConfigurationDialog  extends JDialog {
                         scanTasksWithConfigeAllTimeExecutor != null) {
             scanTasksWithConfigeAllTimeExecutor.onConfigComplete(comandLineStr);
         }
+        dispose();
     }
 
     private

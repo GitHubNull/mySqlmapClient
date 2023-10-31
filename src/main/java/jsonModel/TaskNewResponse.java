@@ -1,4 +1,4 @@
-package sqlmapApi.responsesBody;
+package jsonModel;
 
 
 import lombok.Getter;

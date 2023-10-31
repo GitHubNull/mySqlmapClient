@@ -1,8 +1,9 @@
-package utils;
+package util;
 
 import burp.BurpExtender;
+import jsonModel.ScanConfiguration;
 import org.apache.commons.cli.*;
-import sqlmapApi.requestsBody.ScanConfiguration;
+
 
 import java.lang.reflect.Field;
 
@@ -13,7 +14,7 @@ public class ScanConfigurationHelper {
             return null;
         }
 
-        Options options = GlobalStaticsVar.SCAN_OPTIONS_PARSER_DATA;
+        Options options = GlobalEnv.SCAN_OPTIONS_PARSER_DATA;
 
         String[] commandLineArgs = commandLine.trim().split(" ");
 
