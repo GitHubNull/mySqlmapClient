@@ -88,28 +88,28 @@ public class GlobalEnv {
         Option bulkfileOption = Option.builder("m")
                 .longOpt("bulkfile")
                 .hasArg()
-                .argName("file")
+                .argName("BULKFILE")
                 .desc("Scan multiple targets given in a textual file")
                 .build();
 
         Option requestfileOption = Option.builder("r")
                 .longOpt("requestfile")
                 .hasArg()
-                .argName("file")
+                .argName("REQUESTFILE")
                 .desc("Load HTTP request from a file")
                 .build();
 
         Option googledorkOption = Option.builder("g")
                 .longOpt("googledork")
                 .hasArg()
-                .argName("dork")
+                .argName("GOOGLEDORK")
                 .desc("Process Google dork results as target URLs")
                 .build();
 
         Option configfileOption = Option.builder("c")
                 .longOpt("configfile")
                 .hasArg()
-                .argName("file")
+                .argName("CONFIGFILE")
                 .desc("Load options from a configuration INI file")
                 .build();
 
@@ -297,6 +297,206 @@ public class GlobalEnv {
                 .argName("ABORT_CODE")
                 .desc("Abort on (problematic) HTTP error code(s) (e.g. 401)")
                 .build();
+
+        Option ignoreCodeOption = Option.builder()
+                .longOpt("ignore-code")
+                .hasArg()
+                .argName("ignoreCode")
+                .desc("Ignore (problematic) HTTP error code(s) (e.g. 401)")
+                .build();
+
+        Option ignoreProxyOption = Option.builder()
+                .longOpt("ignore-proxy")
+                .desc("Ignore system default proxy settings")
+                .build();
+
+        Option ignoreRedirectsOption = Option.builder()
+                .longOpt("ignore-redirects")
+                .desc("Ignore redirection attempts")
+                .build();
+
+        Option ignoreTimeoutsOption = Option.builder()
+                .longOpt("ignore-timeouts")
+                .desc("Ignore connection timeouts")
+                .build();
+
+        Option proxyOption = Option.builder()
+                .longOpt("proxy")
+                .hasArg()
+                .argName("proxy")
+                .desc("Use a proxy to connect to the target URL")
+                .build();
+
+        Option proxyCredOption = Option.builder()
+                .longOpt("proxy-cred")
+                .hasArg()
+                .argName("proxyCred")
+                .desc("Proxy authentication credentials (name:password)")
+                .build();
+
+        Option proxyFileOption = Option.builder()
+                .longOpt("proxy-file")
+                .hasArg()
+                .argName("proxyFile")
+                .desc("Load proxy list from a file")
+                .build();
+
+        Option proxyFreqOption = Option.builder()
+                .longOpt("proxy-freq")
+                .hasArg()
+                .argName("proxyFreq")
+                .desc("Requests between change of proxy from a given list")
+                .build();
+
+        Option torOption = Option.builder()
+                .longOpt("tor")
+                .desc("Use Tor anonymity network")
+                .build();
+
+        Option torPortOption = Option.builder()
+                .longOpt("tor-port")
+                .hasArg()
+                .argName("torPort")
+                .desc("Set Tor proxy port other than default")
+                .build();
+
+        Option torTypeOption = Option.builder()
+                .longOpt("tor-type")
+                .hasArg()
+                .argName("torType")
+                .desc("Set Tor proxy type (HTTP, SOCKS4 or SOCKS5 (default))")
+                .build();
+
+        Option checkTorOption = Option.builder()
+                .longOpt("check-tor")
+                .desc("Check to see if Tor is used properly")
+                .build();
+
+        Option delayOption = Option.builder()
+                .longOpt("delay")
+                .hasArg()
+                .argName("delay")
+                .desc("Delay in seconds between each HTTP request")
+                .build();
+
+        Option timeoutOption = Option.builder()
+                .longOpt("timeout")
+                .hasArg()
+                .argName("timeout")
+                .desc("Seconds to wait before timeout connection (default 30)")
+                .build();
+
+        Option retriesOption = Option.builder()
+                .longOpt("retries")
+                .hasArg()
+                .argName("retries")
+                .desc("Retries when the connection timeouts (default 3)")
+                .build();
+
+        Option retryOnOption = Option.builder()
+                .longOpt("retry-on")
+                .hasArg()
+                .argName("retryOn")
+                .desc("Retry request on regexp matching content (e.g. \"drop\")")
+                .build();
+
+        Option randomizeOption = Option.builder()
+                .longOpt("randomize")
+                .hasArg()
+                .argName("randomize")
+                .desc("Randomly change value for given parameter(s)")
+                .build();
+
+        Option safeUrlOption = Option.builder()
+                .longOpt("safe-url")
+                .hasArg()
+                .argName("safeUrl")
+                .desc("URL address to visit frequently during testing")
+                .build();
+
+        Option safePostOption = Option.builder()
+                .longOpt("safe-post")
+                .hasArg()
+                .argName("safePost")
+                .desc("POST data to send to a safe URL")
+                .build();
+
+        Option safeReqOption = Option.builder()
+                .longOpt("safe-req")
+                .hasArg()
+                .argName("safeReq")
+                .desc("Load safe HTTP request from a file")
+                .build();
+
+        Option safeFreqOption = Option.builder()
+                .longOpt("safe-freq")
+                .hasArg()
+                .argName("safeFreq")
+                .desc("Regular requests between visits to a safe URL")
+                .build();
+
+        Option skipURLEncodeOption = Option.builder()
+                .longOpt("skip-urlencode")
+                .desc("Skip URL encoding of payload data")
+                .build();
+
+        Option csrfTokenOption = Option.builder()
+                .longOpt("csrf-token")
+                .hasArg()
+                .argName("csrfToken")
+                .desc("Parameter used to hold anti-CSRF token")
+                .build();
+
+        Option csrfURLOption = Option.builder()
+                .longOpt("csrf-url")
+                .hasArg()
+                .argName("csrfUrl")
+                .desc("URL address to visit for extraction of anti-CSRF token")
+                .build();
+
+        Option csrfMethodOption = Option.builder()
+                .longOpt("csrf-method")
+                .hasArg()
+                .argName("csrfMethod")
+                .desc("HTTP method to use during anti-CSRF token page visit")
+                .build();
+
+        Option csrfDataOption = Option.builder()
+                .longOpt("csrf-data")
+                .hasArg()
+                .argName("csrfData")
+                .desc("POST data to send during anti-CSRF token page visit")
+                .build();
+
+        Option csrfRetriesOption = Option.builder()
+                .longOpt("csrf-retries")
+                .hasArg()
+                .argName("csrfRetries")
+                .desc("Retries for anti-CSRF token retrieval (default 0)")
+                .build();
+
+        Option forceSSLOption = Option.builder()
+                .longOpt("force-ssl")
+                .desc("Force usage of SSL/HTTPS")
+                .build();
+
+        Option chunkedOption = Option.builder()
+                .longOpt("chunked")
+                .desc("Use HTTP chunked transfer encoded (POST) requests")
+                .build();
+
+        Option hppOption = Option.builder()
+                .longOpt("hpp")
+                .desc("Use HTTP parameter pollution method")
+                .build();
+
+        Option evalOption = Option.builder()
+                .longOpt("eval")
+                .hasArg()
+                .argName("evalCode")
+                .desc("Evaluate provided Python code before the request (e.g. \"import hashlib;id2=hashlib.md5(id).hexdigest()\")")
+                .build();
+
 
         /**
          *   Optimization:
@@ -552,63 +752,63 @@ public class GlobalEnv {
         Option techniqueOption = Option.builder()
                 .longOpt("technique")
                 .hasArg()
-                .argName("TECHNIQUE")
+                .argName("technique")
                 .desc("SQL injection techniques to use (default \"BEUSTQ\")")
                 .build();
 
         Option timeSecOption = Option.builder()
-                .longOpt("timeSec")
+                .longOpt("time-sec")
                 .hasArg()
-                .argName("TIMESEC")
+                .argName("timeSec")
                 .desc("Seconds to delay the DBMS response (default 5)")
                 .build();
 
         Option unionColsOption = Option.builder()
-                .longOpt("unionCols")
+                .longOpt("union-cols")
                 .hasArg()
-                .argName("UCOLS")
+                .argName("unionCols")
                 .desc("Range of columns to test for UNION query SQL injection")
                 .build();
 
         Option unionCharOption = Option.builder()
-                .longOpt("unionChar")
+                .longOpt("union-char")
                 .hasArg()
-                .argName("UCHAR")
+                .argName("unionChar")
                 .desc("Character to use for bruteforcing number of columns")
                 .build();
 
         Option unionFromOption = Option.builder()
-                .longOpt("unionFrom")
+                .longOpt("union-from")
                 .hasArg()
-                .argName("UFROM")
+                .argName("unionFrom")
                 .desc("Table to use in FROM part of UNION query SQL injection")
                 .build();
 
         Option unionValuesOption = Option.builder()
-                .longOpt("unionValues")
+                .longOpt("union-values")
                 .hasArg()
-                .argName("UVALUES")
+                .argName("unionValues")
                 .desc("Column values to use for UNION query SQL injection")
                 .build();
 
         Option dnsDomainOption = Option.builder()
-                .longOpt("dnsDomain")
+                .longOpt("dns-domain")
                 .hasArg()
-                .argName("DNSDOMAIN")
+                .argName("dnsDomain")
                 .desc("Domain name used for DNS exfiltration attack")
                 .build();
 
         Option secondUrlOption = Option.builder()
-                .longOpt("secondUrl")
+                .longOpt("second-url")
                 .hasArg()
-                .argName("SECONDURL")
+                .argName("secondUrl")
                 .desc("Resulting page URL searched for second-order response")
                 .build();
 
         Option secondReqOption = Option.builder()
-                .longOpt("secondReq")
+                .longOpt("second-req")
                 .hasArg()
-                .argName("SECONDREQ")
+                .argName("secondReq")
                 .desc("Load second-order HTTP request from file")
                 .build();
 
@@ -819,28 +1019,35 @@ public class GlobalEnv {
         Option startOption = Option.builder()
                 .longOpt("start")
                 .hasArg()
-                .argName("LIMITSTART")
+                .argName("limitStart")
                 .desc("First dump table entry to retrieve")
                 .build();
 
         Option stopOption = Option.builder()
                 .longOpt("stop")
                 .hasArg()
-                .argName("LIMITSTOP")
+                .argName("limitStop")
                 .desc("Last dump table entry to retrieve")
+                .build();
+
+        Option firstOption = Option.builder()
+                .longOpt("first")
+                .hasArg()
+                .argName("firstChar")
+                .desc("First query output word character to retrieve")
                 .build();
 
         Option lastOption = Option.builder()
                 .longOpt("last")
                 .hasArg()
-                .argName("LASTCHAR")
+                .argName("lastChar")
                 .desc("Last query output word character to retrieve")
                 .build();
 
         Option sqlQueryOption = Option.builder()
                 .longOpt("sql-query")
                 .hasArg()
-                .argName("SQLQUERY")
+                .argName("sqlQuery")
                 .desc("SQL statement to be executed")
                 .build();
 
@@ -852,8 +1059,480 @@ public class GlobalEnv {
         Option sqlFileOption = Option.builder()
                 .longOpt("sql-file")
                 .hasArg()
-                .argName("SQLFILE")
+                .argName("sqlFile")
                 .desc("Execute SQL statements from given file(s)")
+                .build();
+
+
+        /**
+         * Brute force:
+         *     These options can be used to run brute force checks
+         *
+         *     --common-tables     Check existence of common tables
+         *     --common-columns    Check existence of common columns
+         *     --common-files      Check existence of common files
+         */
+
+        Option commonTablesOption = Option.builder()
+                .longOpt("common-tables")
+                .desc("Check existence of common tables")
+                .build();
+
+        Option commonColumnsOption = Option.builder()
+                .longOpt("common-columns")
+                .desc("Check existence of common columns")
+                .build();
+
+        Option commonFilesOption = Option.builder()
+                .longOpt("common-files")
+                .desc("Check existence of common files")
+                .build();
+
+
+        /**
+         *  User-defined function injection:
+         *     These options can be used to create custom user-defined functions
+         *
+         *     --udf-inject        Inject custom user-defined functions
+         *     --shared-lib=SHLIB  Local path of the shared library
+         */
+
+        Option udfInjectOption = Option.builder()
+                .longOpt("udf-inject")
+                .desc("Inject custom user-defined functions")
+                .build();
+
+        Option sharedLibOption = Option.builder()
+                .longOpt("shared-lib")
+                .hasArg()
+                .argName("sharedLib")
+                .desc("Local path of the shared library")
+                .build();
+
+
+        /**
+         *   File system access:
+         *     These options can be used to access the back-end database management
+         *     system underlying file system
+         *
+         *     --file-read=FILE..  Read a file from the back-end DBMS file system
+         *     --file-write=FIL..  Write a local file on the back-end DBMS file system
+         *     --file-dest=FILE..  Back-end DBMS absolute filepath to write to
+         */
+
+        Option fileReadOption = Option.builder()
+                .longOpt("file-read")
+                .hasArgs()
+                .argName("files")
+                .desc("Read a file from the back-end DBMS file system")
+                .build();
+
+        Option fileWriteOption = Option.builder()
+                .longOpt("file-write")
+                .hasArgs()
+                .argName("files")
+                .desc("Write a local file on the back-end DBMS file system")
+                .build();
+
+        Option fileDestOption = Option.builder()
+                .longOpt("file-dest")
+                .hasArgs()
+                .argName("files")
+                .desc("Back-end DBMS absolute filepath to write to")
+                .build();
+
+
+        /**
+         *   Operating system access:
+         *     These options can be used to access the back-end database management
+         *     system underlying operating system
+         *
+         *     --os-cmd=OSCMD      Execute an operating system command
+         *     --os-shell          Prompt for an interactive operating system shell
+         *     --os-pwn            Prompt for an OOB shell, Meterpreter or VNC
+         *     --os-smbrelay       One click prompt for an OOB shell, Meterpreter or VNC
+         *     --os-bof            Stored procedure buffer overflow exploitation
+         *     --priv-esc          Database process user privilege escalation
+         *     --msf-path=MSFPATH  Local path where Metasploit Framework is installed
+         *     --tmp-path=TMPPATH  Remote absolute path of temporary files directory
+         */
+
+        Option osCmdOption = Option.builder()
+                .longOpt("os-cmd")
+                .hasArg()
+                .argName("osCmd")
+                .desc("Execute an operating system command")
+                .build();
+
+        Option osShellOption = Option.builder()
+                .longOpt("os-shell")
+                .desc("Prompt for an interactive operating system shell")
+                .build();
+
+        Option osPwnOption = Option.builder()
+                .longOpt("os-pwn")
+                .desc("Prompt for an OOB shell, Meterpreter or VNC")
+                .build();
+
+        Option osSmbRelayOption = Option.builder()
+                .longOpt("os-smbrelay")
+                .desc("One click prompt for an OOB shell, Meterpreter or VNC")
+                .build();
+
+        Option osBofOption = Option.builder()
+                .longOpt("os-bof")
+                .desc("Stored procedure buffer overflow exploitation")
+                .build();
+
+        Option privEscOption = Option.builder()
+                .longOpt("priv-esc")
+                .desc("Database process user privilege escalation")
+                .build();
+
+        Option msfPathOption = Option.builder()
+                .longOpt("msf-path")
+                .hasArg()
+                .argName("msfPath")
+                .desc("Local path where Metasploit Framework is installed")
+                .build();
+
+        Option tmpPathOption = Option.builder()
+                .longOpt("tmp-path")
+                .hasArg()
+                .argName("tmpPath")
+                .desc("Remote absolute path of temporary files directory")
+                .build();
+
+
+        /**
+         *   Windows registry access:
+         *     These options can be used to access the back-end database management
+         *     system Windows registry
+         *
+         *     --reg-read          Read a Windows registry key value
+         *     --reg-add           Write a Windows registry key value data
+         *     --reg-del           Delete a Windows registry key value
+         *     --reg-key=REGKEY    Windows registry key
+         *     --reg-value=REGVAL  Windows registry key value
+         *     --reg-data=REGDATA  Windows registry key value data
+         *     --reg-type=REGTYPE  Windows registry key value type
+         */
+
+        Option regReadOption = Option.builder()
+                .longOpt("reg-read")
+                .desc("Read a Windows registry key value")
+                .build();
+
+        Option regAddOption = Option.builder()
+                .longOpt("reg-add")
+                .desc("Write a Windows registry key value data")
+                .build();
+
+        Option regDelOption = Option.builder()
+                .longOpt("reg-del")
+                .desc("Delete a Windows registry key value")
+                .build();
+
+        Option regKeyOption = Option.builder()
+                .longOpt("reg-key")
+                .hasArg()
+                .argName("regKey")
+                .desc("Windows registry key")
+                .build();
+
+        Option regValueOption = Option.builder()
+                .longOpt("reg-value")
+                .hasArg()
+                .argName("regValue")
+                .desc("Windows registry key value")
+                .build();
+
+        Option regDataOption = Option.builder()
+                .longOpt("reg-data")
+                .hasArg()
+                .argName("regData")
+                .desc("Windows registry key value data")
+                .build();
+
+        Option regTypeOption = Option.builder()
+                .longOpt("reg-type")
+                .hasArg()
+                .argName("regType")
+                .desc("Windows registry key value type")
+                .build();
+
+
+        /**
+         * General:
+         *     These options can be used to set some general working parameters
+         *
+         *     -s SESSIONFILE      Load session from a stored (.sqlite) file
+         *     -t TRAFFICFILE      Log all HTTP traffic into a textual file
+         *     --abort-on-empty    Abort data retrieval on empty results
+         *     --answers=ANSWERS   Set predefined answers (e.g. "quit=N,follow=N")
+         *     --base64=BASE64P..  Parameter(s) containing Base64 encoded data
+         *     --base64-safe       Use URL and filename safe Base64 alphabet (RFC 4648)
+         *     --batch             Never ask for user input, use the default behavior
+         *     --binary-fields=..  Result fields having binary values (e.g. "digest")
+         *     --check-internet    Check Internet connection before assessing the target
+         *     --cleanup           Clean up the DBMS from sqlmap specific UDF and tables
+         *     --crawl=CRAWLDEPTH  Crawl the website starting from the target URL
+         *     --crawl-exclude=..  Regexp to exclude pages from crawling (e.g. "logout")
+         *     --csv-del=CSVDEL    Delimiting character used in CSV output (default ",")
+         *     --charset=CHARSET   Blind SQL injection charset (e.g. "0123456789abcdef")
+         *     --dump-file=DUMP..  Store dumped data to a custom file
+         *     --dump-format=DU..  Format of dumped data (CSV (default), HTML or SQLITE)
+         *     --encoding=ENCOD..  Character encoding used for data retrieval (e.g. GBK)
+         *     --eta               Display for each output the estimated time of arrival
+         *     --flush-session     Flush session files for current target
+         *     --forms             Parse and test forms on target URL
+         *     --fresh-queries     Ignore query results stored in session file
+         *     --gpage=GOOGLEPAGE  Use Google dork results from specified page number
+         *     --har=HARFILE       Log all HTTP traffic into a HAR file
+         *     --hex               Use hex conversion during data retrieval
+         *     --output-dir=OUT..  Custom output directory path
+         *     --parse-errors      Parse and display DBMS error messages from responses
+         *     --preprocess=PRE..  Use given script(s) for preprocessing (request)
+         *     --postprocess=PO..  Use given script(s) for postprocessing (response)
+         *     --repair            Redump entries having unknown character marker (?)
+         *     --save=SAVECONFIG   Save options to a configuration INI file
+         *     --scope=SCOPE       Regexp for filtering targets
+         *     --skip-heuristics   Skip heuristic detection of vulnerabilities
+         *     --skip-waf          Skip heuristic detection of WAF/IPS protection
+         *     --table-prefix=T..  Prefix used for temporary tables (default: "sqlmap")
+         *     --test-filter=TE..  Select tests by payloads and/or titles (e.g. ROW)
+         *     --test-skip=TEST..  Skip tests by payloads and/or titles (e.g. BENCHMARK)
+         *     --time-limit=TIM..  Run with a time limit in seconds (e.g. 3600)
+         *     --web-root=WEBROOT  Web server document root directory (e.g. "/var/www")
+         */
+
+        Option flushSessionOption = Option.builder()
+                .longOpt("flush-session")
+                .desc("Flush session files for current target")
+                .build();
+
+        Option formsOption = Option.builder()
+                .longOpt("forms")
+                .desc("Parse and test forms on target URL")
+                .build();
+
+        Option freshQueriesOption = Option.builder()
+                .longOpt("fresh-queries")
+                .desc("Ignore query results stored in session file")
+                .build();
+
+        Option gpageOption = Option.builder()
+                .longOpt("gpage")
+                .hasArg()
+                .argName("googlePage")
+                .desc("Use Google dork results from specified page number")
+                .build();
+
+        Option harFileOption = Option.builder()
+                .longOpt("har")
+                .hasArg()
+                .argName("harFile")
+                .desc("Log all HTTP traffic into a HAR file")
+                .build();
+
+        Option hexOption = Option.builder()
+                .longOpt("hex")
+                .desc("Use hex conversion during data retrieval")
+                .build();
+
+        Option outputDirOption = Option.builder()
+                .longOpt("output-dir")
+                .hasArg()
+                .argName("outputDir")
+                .desc("Custom output directory path")
+                .build();
+
+        Option parseErrorsOption = Option.builder()
+                .longOpt("parse-errors")
+                .desc("Parse and display DBMS error messages from responses")
+                .build();
+
+        Option preprocessOption = Option.builder()
+                .longOpt("preprocess")
+                .hasArgs()
+                .argName("preprocessScripts")
+                .desc("Use given script(s) for preprocessing (request)")
+                .build();
+
+        Option postprocessOption = Option.builder()
+                .longOpt("postprocess")
+                .hasArgs()
+                .argName("postprocessScripts")
+                .desc("Use given script(s) for postprocessing (response)")
+                .build();
+
+        Option repairOption = Option.builder()
+                .longOpt("repair")
+                .desc("Redump entries having unknown character marker (?)")
+                .build();
+
+        Option saveConfigOption = Option.builder()
+                .longOpt("save")
+                .hasArg()
+                .argName("saveConfig")
+                .desc("Save options to a configuration INI file")
+                .build();
+
+        Option scopeOption = Option.builder()
+                .longOpt("scope")
+                .hasArg()
+                .argName("scope")
+                .desc("Regexp for filtering targets")
+                .build();
+
+        Option skipHeuristicsOption = Option.builder()
+                .longOpt("skip-heuristics")
+                .desc("Skip heuristic detection of vulnerabilities")
+                .build();
+
+        Option skipWafOption = Option.builder()
+                .longOpt("skip-waf")
+                .desc("Skip heuristic detection of WAF/IPS protection")
+                .build();
+
+        Option tablePrefixOption = Option.builder()
+                .longOpt("table-prefix")
+                .hasArg()
+                .argName("tablePrefix")
+                .desc("Prefix used for temporary tables (default: \"sqlmap\")")
+                .build();
+
+        Option testFilterOption = Option.builder()
+                .longOpt("test-filter")
+                .hasArgs()
+                .argName("testFilters")
+                .desc("Select tests by payloads and/or titles (e.g. ROW)")
+                .build();
+
+        Option testSkipOption = Option.builder()
+                .longOpt("test-skip")
+                .hasArgs()
+                .argName("testSkips")
+                .desc("Skip tests by payloads and/or titles (e.g. BENCHMARK)")
+                .build();
+
+        Option timeLimitOption = Option.builder()
+                .longOpt("time-limit")
+                .hasArg()
+                .argName("timeLimit")
+                .desc("Run with a time limit in seconds (e.g. 3600)")
+                .build();
+
+        Option webRootOption = Option.builder()
+                .longOpt("web-root")
+                .hasArg()
+                .argName("webRoot")
+                .desc("Web server document root directory (e.g. \"/var/www\")")
+                .build();
+
+
+        /**
+         *   Miscellaneous:
+         *     These options do not fit into any other category
+         *
+         *     -z MNEMONICS        Use short mnemonics (e.g. "flu,bat,ban,tec=EU")
+         *     --alert=ALERT       Run host OS command(s) when SQL injection is found
+         *     --beep              Beep on question and/or when vulnerability is found
+         *     --dependencies      Check for missing (optional) sqlmap dependencies
+         *     --disable-coloring  Disable console output coloring
+         *     --list-tampers      Display list of available tamper scripts
+         *     --no-logging        Disable logging to a file
+         *     --offline           Work in offline mode (only use session data)
+         *     --purge             Safely remove all content from sqlmap data directory
+         *     --results-file=R..  Location of CSV results file in multiple targets mode
+         *     --shell             Prompt for an interactive sqlmap shell
+         *     --tmp-dir=TMPDIR    Local directory for storing temporary files
+         *     --unstable          Adjust options for unstable connections
+         *     --update            Update sqlmap
+         *     --wizard            Simple wizard interface for beginner users
+         */
+
+        Option mnemonicsOption = Option.builder("z")
+                .longOpt("mnemonics")
+                .hasArg()
+                .argName("mnemonics")
+                .desc("Use short mnemonics (e.g. \"flu,bat,ban,tec=EU\")")
+                .build();
+
+        Option alertOption = Option.builder()
+                .longOpt("alert")
+                .hasArg()
+                .argName("alert")
+                .desc("Run host OS command(s) when SQL injection is found")
+                .build();
+
+        Option beepOption = Option.builder()
+                .longOpt("beep")
+                .desc("Beep on question and/or when vulnerability is found")
+                .build();
+
+        Option dependenciesOption = Option.builder()
+                .longOpt("dependencies")
+                .desc("Check for missing (optional) sqlmap dependencies")
+                .build();
+
+        Option disableColoringOption = Option.builder()
+                .longOpt("disable-coloring")
+                .desc("Disable console output coloring")
+                .build();
+
+        Option listTampersOption = Option.builder()
+                .longOpt("list-tampers")
+                .desc("Display list of available tamper scripts")
+                .build();
+
+        Option noLoggingOption = Option.builder()
+                .longOpt("no-logging")
+                .desc("Disable logging to a file")
+                .build();
+
+        Option offlineOption = Option.builder()
+                .longOpt("offline")
+                .desc("Work in offline mode (only use session data)")
+                .build();
+
+        Option purgeOption = Option.builder()
+                .longOpt("purge")
+                .desc("Safely remove all content from sqlmap data directory")
+                .build();
+
+        Option resultsFileOption = Option.builder()
+                .longOpt("results-file")
+                .hasArg()
+                .argName("resultsFile")
+                .desc("Location of CSV results file in multiple targets mode")
+                .build();
+
+        Option shellOption = Option.builder()
+                .longOpt("shell")
+                .desc("Prompt for an interactive sqlmap shell")
+                .build();
+
+        Option tmpDirOption = Option.builder()
+                .longOpt("tmp-dir")
+                .hasArg()
+                .argName("tmpDir")
+                .desc("Local directory for storing temporary files")
+                .build();
+
+        Option unstableOption = Option.builder()
+                .longOpt("unstable")
+                .desc("Adjust options for unstable connections")
+                .build();
+
+        Option updateOption = Option.builder()
+                .longOpt("update")
+                .desc("Update sqlmap")
+                .build();
+
+        Option wizardOption = Option.builder()
+                .longOpt("wizard")
+                .desc("Simple wizard interface for beginner users")
                 .build();
 
     }
