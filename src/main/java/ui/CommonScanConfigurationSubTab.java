@@ -1,7 +1,7 @@
 package ui;
 
-import entities.CommandLineColumnName;
-import entities.CommandLineColumnNameIndex;
+import entities.CommonCommandLineColumnName;
+import entities.CommonCommandLineColumnNameIndex;
 import entities.OptionsCommandLine;
 import table_models.CommandLineTableModel;
 import ui.component.CommandLineEditorDialog;
@@ -106,9 +106,9 @@ public class CommonScanConfigurationSubTab extends JPanel {
         filterLabel = new JLabel("按照");
 
         filterComboBox = new JComboBox<>();
-        filterComboBox.addItem(CommandLineColumnName.ID.toString());
-        filterComboBox.addItem(CommandLineColumnName.TAG.toString());
-        filterComboBox.addItem(CommandLineColumnName.COMMAND_LINE_STR.toString());
+        filterComboBox.addItem(CommonCommandLineColumnName.ID.toString());
+        filterComboBox.addItem(CommonCommandLineColumnName.TAG.toString());
+        filterComboBox.addItem(CommonCommandLineColumnName.COMMAND_LINE_STR.toString());
 
         filterTextField = new JTextField("", 64);
 
@@ -171,21 +171,21 @@ public class CommonScanConfigurationSubTab extends JPanel {
         }
 
         if (null == selectedObject) {
-            sorter.setRowFilter(RowFilter.regexFilter(filterText, CommandLineColumnNameIndex.TAG_INDEX));
+            sorter.setRowFilter(RowFilter.regexFilter(filterText, CommonCommandLineColumnNameIndex.TAG_INDEX));
             return;
         }
 
-        if (selectedObject.equals(CommandLineColumnName.ID.toString())) {
-            sorter.setRowFilter(RowFilter.regexFilter(filterText, CommandLineColumnNameIndex.ID_INDEX));
+        if (selectedObject.equals(CommonCommandLineColumnName.ID.toString())) {
+            sorter.setRowFilter(RowFilter.regexFilter(filterText, CommonCommandLineColumnNameIndex.ID_INDEX));
 
-        } else if (selectedObject.equals(CommandLineColumnName.TAG.toString())) {
-            sorter.setRowFilter(RowFilter.regexFilter(filterText, CommandLineColumnNameIndex.TAG_INDEX));
+        } else if (selectedObject.equals(CommonCommandLineColumnName.TAG.toString())) {
+            sorter.setRowFilter(RowFilter.regexFilter(filterText, CommonCommandLineColumnNameIndex.TAG_INDEX));
 
-        } else if (selectedObject.equals(CommandLineColumnName.COMMAND_LINE_STR.toString())) {
-            sorter.setRowFilter(RowFilter.regexFilter(filterText, CommandLineColumnNameIndex.COMMAND_LINE_STR_INDEX));
+        } else if (selectedObject.equals(CommonCommandLineColumnName.COMMAND_LINE_STR.toString())) {
+            sorter.setRowFilter(RowFilter.regexFilter(filterText, CommonCommandLineColumnNameIndex.COMMAND_LINE_STR_INDEX));
 
         } else {
-            sorter.setRowFilter(RowFilter.regexFilter(filterText, CommandLineColumnNameIndex.TAG_INDEX));
+            sorter.setRowFilter(RowFilter.regexFilter(filterText, CommonCommandLineColumnNameIndex.TAG_INDEX));
 
         }
 
@@ -256,7 +256,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
                 int col = table.getSelectedColumn();
 
 
-                if (CommandLineColumnNameIndex.ID_INDEX == tableModel.getRowCount()) {
+                if (CommonCommandLineColumnNameIndex.ID_INDEX == tableModel.getRowCount()) {
                     return;
                 }
 
@@ -281,7 +281,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
 
         tableModel.addTableModelListener(e -> {
             int col = e.getColumn();
-            if (CommandLineColumnNameIndex.WAS_DEFAULT_INDEX != col) {
+            if (CommonCommandLineColumnNameIndex.WAS_DEFAULT_INDEX != col) {
                 return;
             }
 

@@ -138,6 +138,7 @@ public class SettingsSubTab extends JPanel{
             statusLabel.setText("Not connected");
             statusLabel.setForeground(Color.RED);
             connectButton.setText("Connect");
+            GlobalEnv.IS_CONNECTED = false;
         }
 
     }

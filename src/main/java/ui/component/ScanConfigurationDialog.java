@@ -1,6 +1,6 @@
 package ui.component;
 
-import entities.ScanTaskHistoryCommandLine;
+import entities.HistoryCommandLine;
 import excutors.ScanTasksWithConfigeAllTimeExecutor;
 import excutors.ScanTasksWithConfigeOneTimeExecutor;
 import util.GlobalEnv;
@@ -66,8 +66,14 @@ public class ScanConfigurationDialog  extends JDialog {
         upSubUpPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         historyLabel = new JLabel("Select history:");
         List<String> historys = new ArrayList<>();
-        for (ScanTaskHistoryCommandLine scanTaskHistoryCommandLine : GlobalEnv.scanTaskHistoryCommandLineList) {
-            historys.add(scanTaskHistoryCommandLine.getCommandLineStr());
+        int index = 0;
+        for (HistoryCommandLine historyCommandLine : GlobalEnv.HISTORY_COMMANDLINE_LIST) {
+            String tmp = historyCommandLine.getCommandLineStr();
+            if(tmp.length() > 32) {
+                tmp = tmp.substring(0, 32) + "...";
+            }
+            index++;
+            historys.add(String.format("[%d] %s", index, tmp));
         }
         historyComboBox = new JComboBox(historys.toArray());
         useHistoryButton = new JButton("Use");
@@ -139,13 +145,13 @@ public class ScanConfigurationDialog  extends JDialog {
             return;
         }
 
-        String comandLineStr = textArea.getText().trim();
+        String commandLineStr = textArea.getText().trim();
         if (scanConfigurationDialogType == ScanConfigurationDialogType.ONE_TIME
                 && scanTasksWithConfigeOneTimeExecutor != null){
-            scanTasksWithConfigeOneTimeExecutor.onConfigComplete(comandLineStr);
+            scanTasksWithConfigeOneTimeExecutor.onConfigComplete(commandLineStr);
         } else if (scanConfigurationDialogType == ScanConfigurationDialogType.ALL_TIME &&
                         scanTasksWithConfigeAllTimeExecutor != null) {
-            scanTasksWithConfigeAllTimeExecutor.onConfigComplete(comandLineStr);
+            scanTasksWithConfigeAllTimeExecutor.onConfigComplete(commandLineStr);
         }
         dispose();
     }

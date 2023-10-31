@@ -1,6 +1,6 @@
 package entities;
 
-public enum CommandLineColumnName {
+public enum CommonCommandLineColumnName {
     ID("序号"),
     WAS_DEFAULT("是否是默认参数"),
     TAG("标签"),
@@ -9,7 +9,7 @@ public enum CommandLineColumnName {
 
     private final String text;
 
-    CommandLineColumnName(final String text) {
+    CommonCommandLineColumnName(final String text) {
         this.text = text;
     }
 

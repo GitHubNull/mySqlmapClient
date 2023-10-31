@@ -10,6 +10,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
+import util.GlobalEnv;
 import util.ScanConfigurationHelper;
 import util.TmpRequestFileHelper;
 
@@ -95,6 +96,7 @@ public class SqlmapApiClient {
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                             if (response != null && response.body() != null && response.body().contentLength() > 0) {
                                 BurpExtender.stdout.println(response.body().string());
+                                GlobalEnv.HISTORY_COMMANDLINE_TABLE_MODEL.addScanTaskHistoryCommandLine(commandLineStr);
                             } else {
                                 BurpExtender.stdout.println("response is null");
                             }

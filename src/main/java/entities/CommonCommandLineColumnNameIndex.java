@@ -1,6 +1,6 @@
 package entities;
 
-public class CommandLineColumnNameIndex {
+public class CommonCommandLineColumnNameIndex {
     public final static int
             ID_INDEX = 0,
             WAS_DEFAULT_INDEX = 1,

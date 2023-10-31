@@ -6,6 +6,7 @@ import burp.IHttpRequestResponse;
 import excutors.ScanTasksWithConfigeAllTimeExecutor;
 import excutors.ScanTasksWithConfigeOneTimeExecutor;
 import ui.component.ScanConfigurationDialog;
+import util.GlobalEnv;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -24,6 +25,9 @@ public class ContextMenuFactory  implements IContextMenuFactory {
         if (httpRequestResponses == null || httpRequestResponses.length == 0){
             return null;
         }
+        if (!GlobalEnv.IS_CONNECTED){
+            return  null;
+        }
 
         List<JMenuItem> menuItemList = new ArrayList<>();
 
@@ -31,24 +35,24 @@ public class ContextMenuFactory  implements IContextMenuFactory {
 
         String suffixStr = requestResponseLength > 1 ? String.format("(%ds)", requestResponseLength) : "";
 
-        JMenuItem scanTasksWithConfigeOneTime = new JMenuItem(String.format("new task%s config one time",  suffixStr));
-        JMenuItem scanTasksWithConfigeAllTime = new JMenuItem(String.format("new task%s config all time",   suffixStr));
+        JMenuItem scanTasksWithConfigOneTime = new JMenuItem(String.format("[*] new task%s config one time",  suffixStr));
+        JMenuItem scanTasksWithConfigAllTime = new JMenuItem(String.format("[*] new task%s config all time",   suffixStr));
 
-        scanTasksWithConfigeOneTime.addActionListener(e-> scanTasksWithConfigeOneTime(e, httpRequestResponses));
-        scanTasksWithConfigeAllTime.addActionListener(e-> scanTasksWithConfigeAllTime(e, httpRequestResponses));
+        scanTasksWithConfigOneTime.addActionListener(e-> scanTasksWithConfigOneTime(e, httpRequestResponses));
+        scanTasksWithConfigAllTime.addActionListener(e-> scanTasksWithConfigAllTime(e, httpRequestResponses));
 
-        menuItemList.add(scanTasksWithConfigeOneTime);
-        menuItemList.add(scanTasksWithConfigeAllTime);
+        menuItemList.add(scanTasksWithConfigOneTime);
+        menuItemList.add(scanTasksWithConfigAllTime);
 
         return menuItemList;
     }
-    private void scanTasksWithConfigeOneTime(ActionEvent actionEvent, IHttpRequestResponse[] httpRequestResponses) {
+    private void scanTasksWithConfigOneTime(ActionEvent actionEvent, IHttpRequestResponse[] httpRequestResponses) {
         ScanTasksWithConfigeOneTimeExecutor scanTaskWithConfigeOneTime = new ScanTasksWithConfigeOneTimeExecutor(httpRequestResponses);
         ScanConfigurationDialog scanConfigurationDialog = new ScanConfigurationDialog(scanTaskWithConfigeOneTime);
         scanConfigurationDialog.showDialog();
     }
 
-    private void scanTasksWithConfigeAllTime(ActionEvent actionEvent,  IHttpRequestResponse[] httpRequestResponses) {
+    private void scanTasksWithConfigAllTime(ActionEvent actionEvent, IHttpRequestResponse[] httpRequestResponses) {
         for (IHttpRequestResponse httpRequestResponse : httpRequestResponses) {
             ScanTasksWithConfigeAllTimeExecutor scanTaskWithConfigeAllTime = new ScanTasksWithConfigeAllTimeExecutor(httpRequestResponse);
             ScanConfigurationDialog scanConfigurationDialog = new ScanConfigurationDialog(scanTaskWithConfigeAllTime);

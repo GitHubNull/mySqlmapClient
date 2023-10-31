@@ -1,6 +1,7 @@
 package ui;
 
-import table_models.ScanTaskHistoryCommandLineTableModel;
+import table_models.HistoryCommandLineTableModel;
+import util.GlobalEnv;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +13,7 @@ public class ScanConfigurationHistorySubTab extends JPanel {
     private JButton searchButton;
     private JScrollPane centerPanel;
     private JTable  table;
-    private ScanTaskHistoryCommandLineTableModel tableModel;
+    private HistoryCommandLineTableModel historyCommandLineTableModel;
     private JPanel southPanel;
     private JButton deleteButton;
 
@@ -36,8 +37,8 @@ public class ScanConfigurationHistorySubTab extends JPanel {
         add(northPanel, BorderLayout.NORTH);
 
         table = new JTable();
-        tableModel = new ScanTaskHistoryCommandLineTableModel();
-        table.setModel(tableModel);
+        historyCommandLineTableModel = GlobalEnv.HISTORY_COMMANDLINE_TABLE_MODEL;
+        table.setModel(historyCommandLineTableModel);
         centerPanel = new JScrollPane(table);
 
         add(centerPanel, BorderLayout.CENTER);

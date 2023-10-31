@@ -1,7 +1,7 @@
 package table_models;
 
-import entities.CommandLineColumnName;
-import entities.CommandLineColumnNameIndex;
+import entities.CommonCommandLineColumnName;
+import entities.CommonCommandLineColumnNameIndex;
 import entities.OptionsCommandLine;
 
 
@@ -36,11 +36,11 @@ public class CommandLineTableModel extends AbstractTableModel {
 
         OptionsCommandLine optionsCommandLine = optionsCommandLineList.get(rowIndex);
         switch (columnIndex) {
-            case CommandLineColumnNameIndex.ID_INDEX:
+            case CommonCommandLineColumnNameIndex.ID_INDEX:
                 return optionsCommandLine.getId();
-            case CommandLineColumnNameIndex.WAS_DEFAULT_INDEX:
+            case CommonCommandLineColumnNameIndex.WAS_DEFAULT_INDEX:
                 return optionsCommandLine.getWasDefault();
-            case CommandLineColumnNameIndex.TAG_INDEX:
+            case CommonCommandLineColumnNameIndex.TAG_INDEX:
                 return optionsCommandLine.getTag();
             case 3:
                 return optionsCommandLine.getCommandLineStr();
@@ -56,14 +56,14 @@ public class CommandLineTableModel extends AbstractTableModel {
         }
 
         switch (column) {
-            case CommandLineColumnNameIndex.ID_INDEX:
-                return CommandLineColumnName.ID.toString();
-            case CommandLineColumnNameIndex.WAS_DEFAULT_INDEX:
-                return CommandLineColumnName.WAS_DEFAULT.toString();
-            case CommandLineColumnNameIndex.TAG_INDEX:
-                return CommandLineColumnName.TAG.toString();
-            case CommandLineColumnNameIndex.COMMAND_LINE_STR_INDEX:
-                return CommandLineColumnName.COMMAND_LINE_STR.toString();
+            case CommonCommandLineColumnNameIndex.ID_INDEX:
+                return CommonCommandLineColumnName.ID.toString();
+            case CommonCommandLineColumnNameIndex.WAS_DEFAULT_INDEX:
+                return CommonCommandLineColumnName.WAS_DEFAULT.toString();
+            case CommonCommandLineColumnNameIndex.TAG_INDEX:
+                return CommonCommandLineColumnName.TAG.toString();
+            case CommonCommandLineColumnNameIndex.COMMAND_LINE_STR_INDEX:
+                return CommonCommandLineColumnName.COMMAND_LINE_STR.toString();
 
             default:
                 return null;
@@ -102,19 +102,19 @@ public class CommandLineTableModel extends AbstractTableModel {
 
         OptionsCommandLine optionsCommandLine = optionsCommandLineList.get(row);
         switch (col) {
-            case CommandLineColumnNameIndex.WAS_DEFAULT_INDEX:
+            case CommonCommandLineColumnNameIndex.WAS_DEFAULT_INDEX:
                 SwingUtilities.invokeLater(() -> {
                     optionsCommandLine.setWasDefault((Boolean) obj);
                     fireTableCellUpdated(row, col);
                 });
                 break;
-            case CommandLineColumnNameIndex.TAG_INDEX:
+            case CommonCommandLineColumnNameIndex.TAG_INDEX:
                 SwingUtilities.invokeLater(() -> {
                     optionsCommandLine.setTag((String) obj);
                     fireTableCellUpdated(row, col);
                 });
                 break;
-            case CommandLineColumnNameIndex.COMMAND_LINE_STR_INDEX:
+            case CommonCommandLineColumnNameIndex.COMMAND_LINE_STR_INDEX:
                 SwingUtilities.invokeLater(() -> {
                     optionsCommandLine.setCommandLineStr((String) obj);
                     fireTableCellUpdated(row, col);
