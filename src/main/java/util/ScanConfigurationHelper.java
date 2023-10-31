@@ -14,7 +14,7 @@ public class ScanConfigurationHelper {
             return null;
         }
 
-        Options options = GlobalEnv.SCAN_OPTIONS_PARSER_DATA;
+        Options options = GlobalEnv.OPTIONS;
 
         String[] commandLineArgs = commandLine.trim().split(" ");
 
