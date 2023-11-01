@@ -86,7 +86,7 @@ public class SettingsSubTab extends JPanel{
         add(centerPanel,BorderLayout.CENTER);
 
         southPanel  = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        southPanel.setBorder(new TitledBorder("other settings"));
+        southPanel.setBorder(new TitledBorder("status"));
 
         statusLabel =  new JLabel("Status: unconnected");
         statusLabel.setBackground(Color.GRAY);

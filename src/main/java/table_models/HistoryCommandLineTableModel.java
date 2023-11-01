@@ -21,6 +21,9 @@ public class HistoryCommandLineTableModel extends AbstractTableModel {
         int id = getRowCount();
         HistoryCommandLine historyCommandLine = new HistoryCommandLine(id, CommandLine);
         historyCommandlineList.add(historyCommandLine);
+        SwingUtilities.invokeLater(() ->{
+            fireTableRowsInserted(id, id);
+        });
     }
 
     @Override
