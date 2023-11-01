@@ -3,6 +3,7 @@ package util;
 import entities.HistoryCommandLine;
 import okhttp3.OkHttpClient;
 import org.apache.commons.cli.Options;
+import org.fife.ui.autocomplete.CompletionProvider;
 import sqlmapApi.SqlmapApiClient;
 import table_models.HistoryCommandLineTableModel;
 
@@ -15,8 +16,13 @@ public class GlobalEnv {
 
     public static boolean IS_CONNECTED = false;
 
+    public static final String COMMIT_ACTION = "commit"; // commit_action
+
     public static String DEFAULT_COMMAND_LINE_STR = "";
     public static String SCAN_OPTIONS_HELP_TEXT = "";
+
+    public static List<String> OPTIONS_KEYWORDS = new ArrayList<>(); // options_keywords
+    public static CompletionProvider provider;
 
 
 //    public static List<String> scanConfigurationHistory = new ArrayList<>();
@@ -34,6 +40,7 @@ public class GlobalEnv {
 
     static {
         init();
+        provider = CompletionProviderInitiator.createCompletionProvider();
     }
 
     public static void init() {

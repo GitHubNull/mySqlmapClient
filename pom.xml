@@ -117,6 +117,12 @@
             <version>1.14</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fifesoft</groupId>
+            <artifactId>autocomplete</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>

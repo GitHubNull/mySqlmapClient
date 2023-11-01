@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class MyStringUtil {
@@ -37,6 +38,8 @@ public class MyStringUtil {
     public static String getDateTimeStr(int type) {
         if (type == 1) {
             return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+        } else if (type == 2) {
+            return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + "--" + UUID.randomUUID().toString().substring(0, 8);
         }
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 

@@ -3,6 +3,9 @@ package ui.component;
 import entities.HistoryCommandLine;
 import excutors.ScanTasksWithConfigeAllTimeExecutor;
 import excutors.ScanTasksWithConfigeOneTimeExecutor;
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
+import util.Autocomplete;
 import util.GlobalEnv;
 
 import javax.swing.*;
@@ -10,6 +13,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import static util.GlobalEnv.COMMIT_ACTION;
 
 public class ScanConfigurationDialog  extends JDialog {
 
@@ -100,7 +105,18 @@ public class ScanConfigurationDialog  extends JDialog {
         add(upPanel, BorderLayout.NORTH);
 
         textArea = new JTextArea();
-        textArea.setRows(1);
+        textArea.setRows(2);
+
+//        textField.setFocusTraversalKeysEnabled(false);
+//        Autocomplete autoComplete = new Autocomplete(textField, GlobalEnv.OPTIONS_KEYWORDS);
+//        textField.getDocument().addDocumentListener(autoComplete);
+//        textField.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+//        textField.getActionMap().put(COMMIT_ACTION, autoComplete.new CommitAction());
+
+        CompletionProvider provider = GlobalEnv.provider;
+        AutoCompletion ac = new AutoCompletion(provider);
+        ac.install(textArea);
+
         centerPanel = new JScrollPane(textArea);
 
         add(centerPanel, BorderLayout.CENTER);
@@ -152,6 +168,12 @@ public class ScanConfigurationDialog  extends JDialog {
         }
 
         String commandLineStr = textArea.getText().trim();
+        commandLineStr = commandLineStr.replaceAll("\\n", "");
+        if (commandLineStr.isEmpty()){
+            dispose();
+            return;
+        }
+
         if (scanConfigurationDialogType == ScanConfigurationDialogType.ONE_TIME
                 && scanTasksWithConfigeOneTimeExecutor != null){
             scanTasksWithConfigeOneTimeExecutor.onConfigComplete(commandLineStr);

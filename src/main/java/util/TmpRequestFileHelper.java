@@ -12,7 +12,7 @@ import static util.GlobalEnv.TMP_REQUEST_FILE_DIR_PATH;
 public class TmpRequestFileHelper {
 
     public static String genTmpFileFinalPath() {
-        String tmpFileName = String.format("tmp-%s.txt", MyStringUtil.getDateTimeStr(1));
+        String tmpFileName = String.format("tmp-%s.txt", MyStringUtil.getDateTimeStr(2));
 
         String tempDirectoryPath;
 

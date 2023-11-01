@@ -79,6 +79,7 @@ public class SettingsSubTab extends JPanel{
         tmpFilePathChooseButton = new JButton("Choose");
         centerPanel.add(tmpFilePathLabel);
         centerPanel.add(tmpFilePathTextField);
+        centerPanel.add(tmpFilePathChooseButton);
         
         tmpFilePathChooseButton.addActionListener(this::tmpFilePathChooseButtonActionPerformed);        
 
@@ -117,29 +118,41 @@ public class SettingsSubTab extends JPanel{
     }
 
     private void connectButtonActionPerformed(ActionEvent actionEvent) {
-        String host = GlobalEnv.HOST;
-        int port = GlobalEnv.PORT;
-        if (!MyStringUtil.isValidIPAddress(host)){
-            JOptionPane.showMessageDialog(this, "host is invalid");
-            return;
-        }
+        String btnText = connectButton.getText();
+        if (btnText.equals("Connect")){
+            String host = GlobalEnv.HOST;
+            int port = GlobalEnv.PORT;
+            if (!MyStringUtil.isValidIPAddress(host)){
+                JOptionPane.showMessageDialog(this, "host is invalid");
+                return;
+            }
 
-        GlobalEnv.okHttpClient = new OkHttpClient();
-        SqlMapApiImpl sqlMapApi = new SqlMapApiImpl(host, port, GlobalEnv.okHttpClient);
-        GlobalEnv.sqlmapApiClient = new SqlmapApiClient(sqlMapApi);
+            GlobalEnv.okHttpClient = new OkHttpClient();
+            SqlMapApiImpl sqlMapApi = new SqlMapApiImpl(host, port, GlobalEnv.okHttpClient);
+            GlobalEnv.sqlmapApiClient = new SqlmapApiClient(sqlMapApi);
 
-        SqlmapApiClient sqlmapApiClient = GlobalEnv.sqlmapApiClient;
-        if (sqlmapApiClient.isConnected()){
-            statusLabel.setText("Connected");
-            statusLabel.setForeground(Color.GREEN);
-            connectButton.setText("Disconnect");
-            GlobalEnv.IS_CONNECTED = true;
-        }else {
+            SqlmapApiClient sqlmapApiClient = GlobalEnv.sqlmapApiClient;
+            if (sqlmapApiClient.isConnected()){
+                statusLabel.setText("Connected");
+                statusLabel.setForeground(Color.GREEN);
+                connectButton.setText("Disconnect");
+                GlobalEnv.IS_CONNECTED = true;
+            }else {
+                statusLabel.setText("Not connected");
+                statusLabel.setForeground(Color.RED);
+                connectButton.setText("Connect");
+                GlobalEnv.IS_CONNECTED = false;
+            }
+        }else  {
+            GlobalEnv.IS_CONNECTED = false;
+            GlobalEnv.okHttpClient = null;
+            GlobalEnv.sqlmapApiClient = null;
             statusLabel.setText("Not connected");
             statusLabel.setForeground(Color.RED);
             connectButton.setText("Connect");
             GlobalEnv.IS_CONNECTED = false;
         }
+
 
     }
 
