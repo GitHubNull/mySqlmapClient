@@ -11,7 +11,7 @@ import java.util.List;
 
 public class GlobalEnv {
     public static String HOST = "127.0.0.1";
-    public static int PORT = 5678;
+    public static int PORT = 8775;
 
     public static boolean IS_CONNECTED = false;
 
@@ -22,11 +22,11 @@ public class GlobalEnv {
 //    public static List<String> scanConfigurationHistory = new ArrayList<>();
 
     public final static int MAX_HISTORY_COMMAND_LINE_LIST_LEN = 12; // max_history_command_line_list_len = 10
-    public static List<HistoryCommandLine> HISTORY_COMMANDLINE_LIST = new ArrayList<>();
+    public static List<HistoryCommandLine> HISTORY_COMMANDLINE_LIST = new FixedSizeList<>(MAX_HISTORY_COMMAND_LINE_LIST_LEN);
     public static HistoryCommandLineTableModel HISTORY_COMMANDLINE_TABLE_MODEL = new HistoryCommandLineTableModel();
 
     public static Options OPTIONS = new Options(); // scan_options_parser_data
-    public static String TMP_REQUEST_FILE_DIR_PATH = "E:/tmp"; // tmp_Request_File_dir_Path
+    public static String TMP_REQUEST_FILE_DIR_PATH = System.getProperty("java.io.tmpdir"); // tmp_Request_File_dir_Path
 
     public static OkHttpClient okHttpClient;
 

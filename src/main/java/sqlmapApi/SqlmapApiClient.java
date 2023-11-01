@@ -74,6 +74,7 @@ public class SqlmapApiClient {
 
                                 @Override
                                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                    assert response.body() != null;
                                     BurpExtender.stdout.println(response.body().string());
                                 }
                             });
@@ -94,7 +95,7 @@ public class SqlmapApiClient {
 
                         @Override
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                            if (response != null && response.body() != null && response.body().contentLength() > 0) {
+                            if (response.body() != null && response.body().contentLength() > 0) {
                                 BurpExtender.stdout.println(response.body().string());
                                 GlobalEnv.HISTORY_COMMANDLINE_TABLE_MODEL.addScanTaskHistoryCommandLine(commandLineStr);
                             } else {
@@ -132,14 +133,7 @@ public class SqlmapApiClient {
         Call call = sqlMapApiImpl.getVersion();
         try {
             Response response = call.execute();
-            if(response == null){
-                return false;
-            }
-            if (response.isSuccessful()){
-                return true;
-            } else {
-                return false;
-            }
+            return response.isSuccessful();
         } catch (IOException e) {
             BurpExtender.stderr.println(e.getMessage());
             return false;

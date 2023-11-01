@@ -120,11 +120,17 @@ public class ScanConfigurationDialog  extends JDialog {
     }
 
     private void useHistoryButtonActionPerformed(ActionEvent actionEvent) {
-        Object selectItem = historyComboBox.getSelectedItem();
-        if (selectItem == null) {
+        int selectedIndex = historyComboBox.getSelectedIndex();
+        if (selectedIndex < 0) {
             return;
         }
-        String history = (String) selectItem;
+
+        HistoryCommandLine historyCommandLine = GlobalEnv.HISTORY_COMMANDLINE_LIST.get(selectedIndex);
+        if (historyCommandLine == null){
+            return;
+        }
+
+        String history = historyCommandLine.getCommandLineStr();
         if(history == null ||  history.trim().isEmpty()){
             return;
         }

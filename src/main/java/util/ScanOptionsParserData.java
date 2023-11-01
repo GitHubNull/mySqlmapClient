@@ -8,6 +8,21 @@ public class ScanOptionsParserData {
     public static void initScanOptionsParserData() {
 
         /*
+          Options:
+            -h, --help            Show basic help message and exit
+            -hh                   Show advanced help message and exit
+            --version             Show program's version number and exit
+            -v VERBOSE            Verbosity level: 0-6 (default 1)
+         */
+
+        Option verboseOption = Option.builder("v")
+                .longOpt("verbose")
+                .hasArg()
+                .argName("level")
+                .desc("Verbosity level: 0-6 (default 1)")
+                .build();
+
+        /*
             Target:
               At least one of these options has to be provided to define the
               target(s)
@@ -21,12 +36,7 @@ public class ScanOptionsParserData {
               -c CONFIGFILE       Load options from a configuration INI file
          */
 
-        Option verboseOption = Option.builder("v")
-                .longOpt("verbose")
-                .hasArg()
-                .argName("level")
-                .desc("Verbosity level: 0-6 (default 1)")
-                .build();
+
 
         Option urlOption = Option.builder("u")
                 .longOpt("url")
@@ -38,40 +48,40 @@ public class ScanOptionsParserData {
         Option directOption = Option.builder("d")
                 .longOpt("direct")
                 .hasArg()
-                .argName("connection")
+                .argName("DIRECT")
                 .desc("Connection string for direct database connection")
                 .build();
 
         Option logfileOption = Option.builder("l")
                 .longOpt("logfile")
                 .hasArg()
-                .argName("file")
+                .argName("LOGFILE")
                 .desc("Parse target(s) from Burp or WebScarab proxy log file")
                 .build();
 
-        Option bulkfileOption = Option.builder("m")
-                .longOpt("bulkfile")
+        Option bulkFileOption = Option.builder("m")
+                .longOpt("bulkFile")
                 .hasArg()
                 .argName("BULKFILE")
                 .desc("Scan multiple targets given in a textual file")
                 .build();
 
         Option requestfileOption = Option.builder("r")
-                .longOpt("requestfile")
+                .longOpt("requestFile")
                 .hasArg()
                 .argName("REQUESTFILE")
                 .desc("Load HTTP request from a file")
                 .build();
 
         Option googledorkOption = Option.builder("g")
-                .longOpt("googledork")
+                .longOpt("googleDork")
                 .hasArg()
                 .argName("GOOGLEDORK")
                 .desc("Process Google dork results as target URLs")
                 .build();
 
-        Option configfileOption = Option.builder("c")
-                .longOpt("configfile")
+        Option configFileOption = Option.builder("c")
+                .longOpt("configFile")
                 .hasArg()
                 .argName("CONFIGFILE")
                 .desc("Load options from a configuration INI file")
@@ -81,10 +91,10 @@ public class ScanOptionsParserData {
         OPTIONS.addOption(urlOption);
         OPTIONS.addOption(directOption);
         OPTIONS.addOption(logfileOption);
-        OPTIONS.addOption(bulkfileOption);
+        OPTIONS.addOption(bulkFileOption);
         OPTIONS.addOption(requestfileOption);
         OPTIONS.addOption(googledorkOption);
-        OPTIONS.addOption(configfileOption);
+        OPTIONS.addOption(configFileOption);
 
         /*
           Request:
@@ -262,13 +272,6 @@ public class ScanOptionsParserData {
                 .hasArg()
                 .argName("AUTH_FILE")
                 .desc("HTTP authentication PEM cert/private key file")
-                .build();
-
-        Option abortCodeOption = Option.builder()
-                .longOpt("abort-code")
-                .hasArg()
-                .argName("ABORT_CODE")
-                .desc("Abort on (problematic) HTTP error code(s) (e.g. 401)")
                 .build();
 
         Option ignoreCodeOption = Option.builder()
@@ -489,7 +492,6 @@ public class ScanOptionsParserData {
         OPTIONS.addOption(authTypeOption);
         OPTIONS.addOption(authCredOption);
         OPTIONS.addOption(authFileOption);
-        OPTIONS.addOption(abortCodeOption);
         OPTIONS.addOption(ignoreCodeOption);
         OPTIONS.addOption(ignoreProxyOption);
         OPTIONS.addOption(ignoreRedirectsOption);
@@ -535,7 +537,7 @@ public class ScanOptionsParserData {
          */
 
         Option optimizationOption = Option.builder("o")
-                .longOpt("optimization")
+                .longOpt("optimize")
                 .desc("Turn on all optimization switches")
                 .build();
 
@@ -841,13 +843,6 @@ public class ScanOptionsParserData {
                 .desc("Table to use in FROM part of UNION query SQL injection")
                 .build();
 
-        Option unionValuesOption = Option.builder()
-                .longOpt("union-values")
-                .hasArg()
-                .argName("unionValues")
-                .desc("Column values to use for UNION query SQL injection")
-                .build();
-
         Option dnsDomainOption = Option.builder()
                 .longOpt("dns-domain")
                 .hasArg()
@@ -874,7 +869,6 @@ public class ScanOptionsParserData {
         OPTIONS.addOption(unionColsOption);
         OPTIONS.addOption(unionCharOption);
         OPTIONS.addOption(unionFromOption);
-        OPTIONS.addOption(unionValuesOption);
         OPTIONS.addOption(dnsDomainOption);
         OPTIONS.addOption(secondUrlOption);
         OPTIONS.addOption(secondReqOption);
@@ -1036,30 +1030,35 @@ public class ScanOptionsParserData {
                 .build();
 
         Option dbOption = Option.builder("D")
+                .longOpt("db")
                 .hasArg()
                 .argName("DB")
                 .desc("DBMS database to enumerate")
                 .build();
 
         Option tblOption = Option.builder("T")
+                .longOpt("tbl")
                 .hasArg()
                 .argName("TBL")
                 .desc("DBMS database table(s) to enumerate")
                 .build();
 
         Option colOption = Option.builder("C")
+                .longOpt("col")
                 .hasArg()
                 .argName("COL")
                 .desc("DBMS database table column(s) to enumerate")
                 .build();
 
         Option excludeOption = Option.builder("X")
+                .longOpt("exclude")
                 .hasArg()
                 .argName("EXCLUDE")
                 .desc("DBMS database identifier(s) to not enumerate")
                 .build();
 
         Option userOption = Option.builder("U")
+                .longOpt("user")
                 .hasArg()
                 .argName("USER")
                 .desc("DBMS user to enumerate")
@@ -1119,11 +1118,6 @@ public class ScanOptionsParserData {
                 .desc("SQL statement to be executed")
                 .build();
 
-        Option sqlShellOption = Option.builder()
-                .longOpt("sql-shell")
-                .desc("Prompt for an interactive SQL shell")
-                .build();
-
         Option sqlFileOption = Option.builder()
                 .longOpt("sql-file")
                 .hasArg()
@@ -1164,7 +1158,6 @@ public class ScanOptionsParserData {
         OPTIONS.addOption(firstOption);
         OPTIONS.addOption(lastOption);
         OPTIONS.addOption(sqlQueryOption);
-        OPTIONS.addOption(sqlShellOption);
         OPTIONS.addOption(sqlFileOption);
 
         /*
@@ -1399,7 +1392,6 @@ public class ScanOptionsParserData {
 
               -s SESSIONFILE      Load session from a stored (.sqlite) file
               -t TRAFFICFILE      Log all HTTP traffic into a textual file
-              --abort-on-empty    Abort data retrieval on empty results
               --answers=ANSWERS   Set predefined answers (e.g. "quit=N,follow=N")
               --base64=BASE64P..  Parameter(s) containing Base64 encoded data
               --base64-safe       Use URL and filename safe Base64 alphabet (RFC 4648)
@@ -1436,6 +1428,115 @@ public class ScanOptionsParserData {
               --time-limit=TIM..  Run with a time limit in seconds (e.g. 3600)
               --web-root=WEBROOT  Web server document root directory (e.g. "/var/www")
          */
+
+        Option sessionFileOption = Option.builder("s")
+                .longOpt("sessionFile")
+                .hasArg()
+                .argName("sessionFile")
+                .desc("Load session from a stored (.sqlite) file")
+                .build();
+
+        Option trafficFileOption = Option.builder("t")
+                .longOpt("trafficFile")
+                .hasArg()
+                .argName("trafficFile")
+                .desc("Log all HTTP traffic into a textual file")
+                .build();
+
+        Option answersOption = Option.builder()
+                .longOpt("answers")
+                .hasArg()
+                .argName("answers")
+                .desc("Set predefined answers (e.g. \"quit=N,follow=N\")")
+                .build();
+
+        Option base64Option = Option.builder()
+                .longOpt("base64")
+                .hasArg()
+                .argName("base64Param")
+                .desc("Parameter(s) containing Base64 encoded data")
+                .build();
+
+        Option base64SafeOption = Option.builder()
+                .longOpt("base64-safe")
+                .desc("Use URL and filename safe Base64 alphabet (RFC 4648)")
+                .build();
+
+        Option batchOption = Option.builder()
+                .longOpt("batch")
+                .desc("Never ask for user input, use the default behavior")
+                .build();
+
+        Option binaryFieldsOption = Option.builder()
+                .longOpt("binary-fields")
+                .hasArg()
+                .argName("binaryFields")
+                .desc("Result fields having binary values (e.g. \"digest\")")
+                .build();
+
+        Option checkInternetOption = Option.builder()
+                .longOpt("check-internet")
+                .desc("Check Internet connection before assessing the target")
+                .build();
+
+        Option cleanupOption = Option.builder()
+                .longOpt("cleanup")
+                .desc("Clean up the DBMS from sqlmap specific UDF and tables")
+                .build();
+
+        Option crawlOption = Option.builder()
+                .longOpt("crawl")
+                .hasArg()
+                .argName("crawlDepth")
+                .desc("Crawl the website starting from the target URL")
+                .build();
+
+        Option crawlExcludeOption = Option.builder()
+                .longOpt("crawl-exclude")
+                .hasArg()
+                .argName("crawlExclude")
+                .desc("Regexp to exclude pages from crawling (e.g. \"logout\")")
+                .build();
+
+        Option csvDelOption = Option.builder()
+                .longOpt("csv-del")
+                .hasArg()
+                .argName("csvDel")
+                .desc("Delimiting character used in CSV output (default \",\")")
+                .build();
+
+        Option charsetOption = Option.builder()
+                .longOpt("charset")
+                .hasArg()
+                .argName("charset")
+                .desc("Blind SQL injection charset (e.g. \"0123456789abcdef\")")
+                .build();
+
+        Option dumpFileOption = Option.builder()
+                .longOpt("dump-file")
+                .hasArg()
+                .argName("dumpFile")
+                .desc("Store dumped data to a custom file")
+                .build();
+
+        Option dumpFormatOption = Option.builder()
+                .longOpt("dump-format")
+                .hasArg()
+                .argName("dumpFormat")
+                .desc("Format of dumped data (CSV (default), HTML or SQLITE)")
+                .build();
+
+        Option encodingOption = Option.builder()
+                .longOpt("encoding")
+                .hasArg()
+                .argName("encoding")
+                .desc("Character encoding used for data retrieval (e.g. GBK)")
+                .build();
+
+        Option etaOption = Option.builder()
+                .longOpt("eta")
+                .desc("Display for each output the estimated time of arrival")
+                .build();
 
         Option flushSessionOption = Option.builder()
                 .longOpt("flush-session")
@@ -1561,6 +1662,23 @@ public class ScanOptionsParserData {
                 .desc("Web server document root directory (e.g. \"/var/www\")")
                 .build();
 
+        OPTIONS.addOption(sessionFileOption);
+        OPTIONS.addOption(trafficFileOption);
+        OPTIONS.addOption(answersOption);
+        OPTIONS.addOption(base64Option);
+        OPTIONS.addOption(base64SafeOption);
+        OPTIONS.addOption(batchOption);
+        OPTIONS.addOption(binaryFieldsOption);
+        OPTIONS.addOption(checkInternetOption);
+        OPTIONS.addOption(cleanupOption);
+        OPTIONS.addOption(crawlOption);
+        OPTIONS.addOption(crawlExcludeOption);
+        OPTIONS.addOption(csvDelOption);
+        OPTIONS.addOption(charsetOption);
+        OPTIONS.addOption(dumpFileOption);
+        OPTIONS.addOption(dumpFormatOption);
+        OPTIONS.addOption(encodingOption);
+        OPTIONS.addOption(etaOption);
         OPTIONS.addOption(flushSessionOption);
         OPTIONS.addOption(formsOption);
         OPTIONS.addOption(freshQueriesOption);

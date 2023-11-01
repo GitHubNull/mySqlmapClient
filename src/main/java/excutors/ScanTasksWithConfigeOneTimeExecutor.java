@@ -23,7 +23,7 @@ public class ScanTasksWithConfigeOneTimeExecutor implements TaskCallback {
         stdout.println("onConfigComplete result:"+result);
 
         SqlmapApiClient sqlmapApiClient = GlobalEnv.sqlmapApiClient;
-        if (sqlmapApiClient == null && sqlmapApiClient.isSqlMapApiImplSet()){
+        if (sqlmapApiClient != null && sqlmapApiClient.isSqlMapApiImplSet()){
             for (IHttpRequestResponse httpRequestResponse : httpRequestResponses) {
                 try {
                     sqlmapApiClient.startScan(result, httpRequestResponse);

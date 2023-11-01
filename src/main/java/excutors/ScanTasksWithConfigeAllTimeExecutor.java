@@ -30,7 +30,7 @@ public class ScanTasksWithConfigeAllTimeExecutor implements TaskCallback{
        BurpExtender.stdout.println("[*] onConfigComplete result is "+result);
 
         SqlmapApiClient sqlmapApiClient = GlobalEnv.sqlmapApiClient;
-        if (sqlmapApiClient == null && sqlmapApiClient.isSqlMapApiImplSet()){
+        if (sqlmapApiClient != null && sqlmapApiClient.isSqlMapApiImplSet()){
             try {
                 sqlmapApiClient.startScan(result, httpRequestResponse);
             }catch (Exception e){

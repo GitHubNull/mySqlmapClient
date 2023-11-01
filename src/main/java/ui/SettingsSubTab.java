@@ -161,7 +161,7 @@ public class SettingsSubTab extends JPanel{
             return false;
         }
 
-        if (!MyStringUtil.isValidPort(port)) {
+        if (!MyStringUtil.isTruePortNumber(port)) {
             JOptionPane.showMessageDialog(this, "port is invalid");
             return false;
         }
