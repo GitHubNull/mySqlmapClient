@@ -27,7 +27,7 @@ public class ScanTasksWithConfigeAllTimeExecutor implements TaskCallback{
            return;
        }
 
-       BurpExtender.stdout.println("[*] onConfigComplete result is "+result);
+       BurpExtender.stdout.println("[*] ScanTasksWithConfigeAllTimeExecutor.onConfigComplete result is "+result);
 
         SqlmapApiClient sqlmapApiClient = GlobalEnv.sqlmapApiClient;
         if (sqlmapApiClient != null && sqlmapApiClient.isSqlMapApiImplSet()){
@@ -36,6 +36,8 @@ public class ScanTasksWithConfigeAllTimeExecutor implements TaskCallback{
             }catch (Exception e){
                 BurpExtender.stderr.println("[!] startScan error:"+e.getMessage());
             }
+        }else {
+            BurpExtender.stderr.println("[!] sqlmapApiClient is null");
         }
     }
 

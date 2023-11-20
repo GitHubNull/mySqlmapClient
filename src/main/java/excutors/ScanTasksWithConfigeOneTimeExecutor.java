@@ -9,7 +9,7 @@ import util.GlobalEnv;
 import static burp.BurpExtender.stdout;
 
 public class ScanTasksWithConfigeOneTimeExecutor implements TaskCallback {
-    IHttpRequestResponse[] httpRequestResponses;
+    private IHttpRequestResponse[] httpRequestResponses;
     public ScanTasksWithConfigeOneTimeExecutor(IHttpRequestResponse[] httpRequestResponses) {
         this.httpRequestResponses = httpRequestResponses;
     }
@@ -20,17 +20,21 @@ public class ScanTasksWithConfigeOneTimeExecutor implements TaskCallback {
             return;
         }
 
-        stdout.println("onConfigComplete result:"+result);
+        stdout.println("[*] ScanTasksWithConfigeOneTimeExecutor.onConfigComplete result:"+result);
 
         SqlmapApiClient sqlmapApiClient = GlobalEnv.sqlmapApiClient;
         if (sqlmapApiClient != null && sqlmapApiClient.isSqlMapApiImplSet()){
+            stdout.println("[*] ScanTasksWithConfigeOneTimeExecutor.onConfigComplete sqlmapApiClient is set");
             for (IHttpRequestResponse httpRequestResponse : httpRequestResponses) {
+//                stdout.println("[*] ScanTasksWithConfigeOneTimeExecutor.onConfigComplete httpRequestResponse:"+httpRequestResponse);
                 try {
                     sqlmapApiClient.startScan(result, httpRequestResponse);
                 }catch (Exception e){
-                    BurpExtender.stderr.println("startScan error:"+e.getMessage());
+                    BurpExtender.stderr.println("[!] startScan error:"+e.getMessage());
                 }
             }
+        }else {
+            BurpExtender.stderr.println("[!] sqlmapApiClient is null or not set");
         }
 
     }

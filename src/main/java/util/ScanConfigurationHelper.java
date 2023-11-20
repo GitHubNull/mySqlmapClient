@@ -1,19 +1,28 @@
 package util;
 
 import burp.BurpExtender;
+import com.alibaba.fastjson2.JSON;
 import jsonModel.ScanConfiguration;
 import org.apache.commons.cli.*;
 
 public class ScanConfigurationHelper {
 
     public static ScanConfiguration CommandLineToScanConfiguration(String commandLine) throws IllegalAccessException {
+        BurpExtender.stdout.println("ScanConfigurationHelper.ScanConfiguration Command line: " + commandLine);
         if (null == commandLine || commandLine.trim().isEmpty()) {
+            BurpExtender.stdout.println("No command line arguments provided");
             return null;
         }
+
+        BurpExtender.stdout.println("Command line arguments: " + commandLine);
 
         Options options = GlobalEnv.OPTIONS;
 
         String[] commandLineArgs = commandLine.trim().split(" ");
+
+        for (String commandLineArg : commandLineArgs) {
+            BurpExtender.stdout.println("ScanConfigurationHelper.CommandLineToScanConfiguration ommand line arg: " + commandLineArg);
+        }
 
         CommandLine cmd;
         CommandLineParser parser = new DefaultParser();
@@ -22,6 +31,11 @@ public class ScanConfigurationHelper {
             cmd = parser.parse(options, commandLineArgs);
         } catch (ParseException ex) {
             BurpExtender.stderr.println(ex.getMessage());
+            return null;
+        }
+
+        if (cmd == null){
+            BurpExtender.stderr.println("Command line parsing failed");
             return null;
         }
 
@@ -208,14 +222,22 @@ public class ScanConfigurationHelper {
         }
 
         if (cmd.hasOption("live-cookies")) {
-            String liveCookies = cmd.getOptionValue("liveCookies").trim();
+            String liveCookies = cmd.getOptionValue("live-cookies").trim();
+            BurpExtender.stdout
+                    .println("[+] Loading live cookies from " + liveCookies);
             if (!liveCookies.isEmpty()) {
+                BurpExtender.stdout.println("[+] liveCookies is not  empty");
                 scanConfiguration.setLiveCookies(liveCookies);
+            }else{
+                BurpExtender.stdout
+                        .println("[!] liveCookies is empty");
             }
+        }else{
+            BurpExtender.stdout.println("[!] cmd has no live-cookies");
         }
 
         if (cmd.hasOption("load-cookies")) {
-            String loadCookies = cmd.getOptionValue("loadCookies").trim();
+            String loadCookies = cmd.getOptionValue("load-cookies").trim();
             if (!loadCookies.isEmpty()) {
                 scanConfiguration.setLoadCookies(loadCookies);
             }
@@ -1688,6 +1710,8 @@ public class ScanConfigurationHelper {
 //        if (cmd.hasOption("wizard")) {
 //            scanConfiguration.setWizard(true);
 //        }
+
+        BurpExtender.stdout.println("ScanConfigurationHelper.CommandLineToScanConfiguration Scan configuration: " + JSON.toJSONString(scanConfiguration));
 
         return scanConfiguration;
     }
