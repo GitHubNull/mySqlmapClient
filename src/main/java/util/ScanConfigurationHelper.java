@@ -201,7 +201,7 @@ public class ScanConfigurationHelper {
         }
 
         if (cmd.hasOption("param-del")) {
-            String paramDel = cmd.getOptionValue("cookie").trim();
+            String paramDel = cmd.getOptionValue("param-del").trim();
             if (!paramDel.isEmpty()) {
                 scanConfiguration.setCookie(paramDel);
             }
@@ -292,7 +292,7 @@ public class ScanConfigurationHelper {
 
         // auth-cred
         if (cmd.hasOption("auth-cred")) {
-            String authCred = cmd.getOptionValue("authCred").trim();
+            String authCred = cmd.getOptionValue("auth-cred").trim();
             if (!authCred.isEmpty()) {
                 scanConfiguration.setAuthCred(authCred);
             }
@@ -300,7 +300,7 @@ public class ScanConfigurationHelper {
 
         // auth-file
         if (cmd.hasOption("auth-file")) {
-            String authFile = cmd.getOptionValue("authFile").trim();
+            String authFile = cmd.getOptionValue("auth-file").trim();
             if (!authFile.isEmpty()) {
                 scanConfiguration.setAuthFile(authFile);
             }
@@ -308,7 +308,7 @@ public class ScanConfigurationHelper {
 
         // ignore-code
         if (cmd.hasOption("ignore-code")) {
-            String ignoreCode = cmd.getOptionValue("ignoreCode").trim();
+            String ignoreCode = cmd.getOptionValue("ignore-code").trim();
             if (!ignoreCode.isEmpty()) {
                 scanConfiguration.setIgnoreCode(ignoreCode);
             }
@@ -347,7 +347,7 @@ public class ScanConfigurationHelper {
 
         // proxy-file
         if (cmd.hasOption("proxy-file")) {
-            String proxyFile = cmd.getOptionValue("proxyFile").trim();
+            String proxyFile = cmd.getOptionValue("proxy-file").trim();
             if (!proxyFile.isEmpty()) {
                 scanConfiguration.setProxyFile(proxyFile);
             }
@@ -355,7 +355,7 @@ public class ScanConfigurationHelper {
 
         // proxy-freq
         if (cmd.hasOption("proxy-freq")) {
-            String proxyFreq = cmd.getOptionValue("proxyFreq").trim();
+            String proxyFreq = cmd.getOptionValue("proxy-freq").trim();
             if (!proxyFreq.isEmpty()) {
                 scanConfiguration.setProxyFreq(Integer.parseInt(proxyFreq));
             }

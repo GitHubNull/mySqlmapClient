@@ -60,7 +60,7 @@ public class SqlMapApiImpl  implements SqlMapApi {
     }
 
     public Call scanStart(String taskId, ScanConfiguration scanConfiguration) {
-        String apiPath = String.format("/scan/%s/start", taskId);
+        String apiPath = String.format("/scan/start/%s", taskId);
         String json = JSON.toJSONString(scanConfiguration);
         RequestBody requestBody = RequestBody.create(json, JSON_TYPE);
         return okHttpClient.newCall(buildRequest(apiPath, "POST", requestBody));
@@ -68,7 +68,7 @@ public class SqlMapApiImpl  implements SqlMapApi {
 
     @Override
     public Call taskDelete(String taskId) {
-        String apiPath = String.format("/task/%s/delete", taskId);
+        String apiPath = String.format("/task/delete/%s", taskId);
         return okHttpClient.newCall(buildRequest(apiPath, "GET", null));
     }
 
