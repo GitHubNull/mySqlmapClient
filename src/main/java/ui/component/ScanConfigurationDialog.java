@@ -16,7 +16,7 @@ import java.util.List;
 
 import static util.GlobalEnv.COMMIT_ACTION;
 
-public class ScanConfigurationDialog  extends JDialog {
+public class ScanConfigurationDialog  extends JFrame {
 
     /**
      *
@@ -157,7 +157,7 @@ public class ScanConfigurationDialog  extends JDialog {
         pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setModal(true);
+//        setModal(true);
         setVisible(true);
     }
 

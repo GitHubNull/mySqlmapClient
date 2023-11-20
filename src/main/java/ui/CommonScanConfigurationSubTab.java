@@ -368,9 +368,9 @@ public class CommonScanConfigurationSubTab extends JPanel {
         initSouthBtnActionListening();
     }
 
-    public List<OptionsCommandLine> getOptionsCommandLineList() {
-        return tableModel.getOptionsCommandLineList();
-    }
+//    public List<OptionsCommandLine> getOptionsCommandLineList() {
+//        return tableModel.getOptionsCommandLineList();
+//    }
 
     public CommandLineTableModel getTableModel() {
         return tableModel;

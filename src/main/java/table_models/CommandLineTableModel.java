@@ -3,6 +3,8 @@ package table_models;
 import entities.CommonCommandLineColumnName;
 import entities.CommonCommandLineColumnNameIndex;
 import entities.OptionsCommandLine;
+import lombok.Getter;
+import util.GlobalEnv;
 
 
 import javax.swing.*;
@@ -10,17 +12,19 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class CommandLineTableModel extends AbstractTableModel {
-    List<OptionsCommandLine> optionsCommandLineList = new ArrayList<>();
+    private static int id = 1;
+//    List<OptionsCommandLine> optionsCommandLineList = GlobalEnv.OPTIONS_COMMANDLINE_LIST;
     static final int STATIC_COLUMN_COUNT = 4;
 
-    public void setScanTaskArgsList(List<OptionsCommandLine> optionsCommandLineList) {
-        this.optionsCommandLineList = optionsCommandLineList;
-    }
+//    public void setScanTaskArgsList(List<OptionsCommandLine> optionsCommandLineList) {
+//        GlobalEnv.OPTIONS_COMMANDLINE_LIST = optionsCommandLineList;
+//    }
 
     @Override
     public int getRowCount() {
-        return optionsCommandLineList.size();
+        return GlobalEnv.OPTIONS_COMMANDLINE_LIST.size();
     }
 
     @Override
@@ -28,13 +32,19 @@ public class CommandLineTableModel extends AbstractTableModel {
         return STATIC_COLUMN_COUNT;
     }
 
+    public int generateId() {
+        int generatedId = id;
+        id = (id % 12) + 1;
+        return generatedId;
+    }
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (0 == optionsCommandLineList.size() || (0 > rowIndex || rowIndex >= optionsCommandLineList.size()) || (0 > columnIndex || STATIC_COLUMN_COUNT <= columnIndex)) {
+        if (GlobalEnv.OPTIONS_COMMANDLINE_LIST.isEmpty() || (0 > rowIndex || rowIndex >= GlobalEnv.OPTIONS_COMMANDLINE_LIST.size()) || (0 > columnIndex || STATIC_COLUMN_COUNT <= columnIndex)) {
             return null;
         }
 
-        OptionsCommandLine optionsCommandLine = optionsCommandLineList.get(rowIndex);
+        OptionsCommandLine optionsCommandLine = GlobalEnv.OPTIONS_COMMANDLINE_LIST.get(rowIndex);
         switch (columnIndex) {
             case CommonCommandLineColumnNameIndex.ID_INDEX:
                 return optionsCommandLine.getId();
@@ -96,11 +106,11 @@ public class CommandLineTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object obj, int row, int col) {
-        if (null == obj || 0 > row || optionsCommandLineList.size() < row || 0 >= col || STATIC_COLUMN_COUNT <= col) {
+        if (null == obj || 0 > row || GlobalEnv.OPTIONS_COMMANDLINE_LIST.size() < row || 0 >= col || STATIC_COLUMN_COUNT <= col) {
             return;
         }
 
-        OptionsCommandLine optionsCommandLine = optionsCommandLineList.get(row);
+        OptionsCommandLine optionsCommandLine = GlobalEnv.OPTIONS_COMMANDLINE_LIST.get(row);
         switch (col) {
             case CommonCommandLineColumnNameIndex.WAS_DEFAULT_INDEX:
                 SwingUtilities.invokeLater(() -> {
@@ -130,81 +140,78 @@ public class CommandLineTableModel extends AbstractTableModel {
         if (null == optionsCommandLine) {
             return;
         }
-        int id = optionsCommandLine.getId();
-        SwingUtilities.invokeLater(() -> {
-            optionsCommandLineList.add(optionsCommandLine);
-            fireTableRowsInserted(id, id);
-        });
+        GlobalEnv.OPTIONS_COMMANDLINE_LIST.add(optionsCommandLine);
+        SwingUtilities.invokeLater(this::fireTableDataChanged);
     }
 
-    public void addOptionsCommandLine(String tag, String argsStr) {
-        SwingUtilities.invokeLater(() -> {
-            int id = optionsCommandLineList.size();
-            optionsCommandLineList.add(new OptionsCommandLine(id, tag, argsStr, false));
-            fireTableRowsInserted(id, id);
-        });
+    public synchronized void addOptionsCommandLine(String tag, String argsStr) {
+        if (null == tag || null == argsStr){
+            return;
+        }
+        int current_id = generateId();
+        if (GlobalEnv.OPTIONS_COMMANDLINE_LIST.size() > GlobalEnv.MAX_HISTORY_COMMAND_LINE_LIST_LEN * 2){
+            GlobalEnv.OPTIONS_COMMANDLINE_LIST.remove(0);
+        }
+        GlobalEnv.OPTIONS_COMMANDLINE_LIST.add(new OptionsCommandLine(current_id, tag, argsStr, false));
+        SwingUtilities.invokeLater(this::fireTableDataChanged);
     }
 
     public synchronized void deleteOptionsCommandLineById(int id) {
-        if (0 == optionsCommandLineList.size() || (0 > id || id > optionsCommandLineList.size())) {
+        if (GlobalEnv.OPTIONS_COMMANDLINE_LIST.isEmpty() || (0 > id || id > GlobalEnv.OPTIONS_COMMANDLINE_LIST.size())) {
             return;
         }
 
         SwingUtilities.invokeLater(() -> {
-            optionsCommandLineList.remove(id);
+            GlobalEnv.OPTIONS_COMMANDLINE_LIST.remove(id);
             fireTableRowsDeleted(id, id);
         });
     }
 
     public void updateWasDefaultById(int id, Boolean wasDefault) {
-        if (0 == optionsCommandLineList.size() || (0 > id || id >= optionsCommandLineList.size())) {
+        if (GlobalEnv.OPTIONS_COMMANDLINE_LIST.isEmpty() || (0 > id || id >= GlobalEnv.OPTIONS_COMMANDLINE_LIST.size())) {
             return;
         }
 
         SwingUtilities.invokeLater(() -> {
-            optionsCommandLineList.get(id).setWasDefault(wasDefault);
+            GlobalEnv.OPTIONS_COMMANDLINE_LIST.get(id).setWasDefault(wasDefault);
             fireTableCellUpdated(id, 1);
         });
 
     }
 
     public void updateTagById(int id, String tag) {
-        if (0 == optionsCommandLineList.size() || (0 > id || id >= optionsCommandLineList.size()) || (null == tag || tag.trim().isEmpty())) {
+        if (GlobalEnv.OPTIONS_COMMANDLINE_LIST.isEmpty() || (0 > id || id >= GlobalEnv.OPTIONS_COMMANDLINE_LIST.size()) || (null == tag || tag.trim().isEmpty())) {
             return;
         }
 
         SwingUtilities.invokeLater(() -> {
-            optionsCommandLineList.get(id).setTag(tag.trim());
+            GlobalEnv.OPTIONS_COMMANDLINE_LIST.get(id).setTag(tag.trim());
             fireTableCellUpdated(id, 2);
         });
 
     }
 
     public void updateCommandLinesById(int id, String commandLineStr) {
-        if (0 == optionsCommandLineList.size() || (0 > id || id >= optionsCommandLineList.size()) || (null == commandLineStr || commandLineStr.trim().isEmpty())) {
+        if (GlobalEnv.OPTIONS_COMMANDLINE_LIST.isEmpty() || (0 > id || id >= GlobalEnv.OPTIONS_COMMANDLINE_LIST.size()) || (null == commandLineStr || commandLineStr.trim().isEmpty())) {
             return;
         }
 
         SwingUtilities.invokeLater(() -> {
-            optionsCommandLineList.get(id).setCommandLineStr(commandLineStr);
+            GlobalEnv.OPTIONS_COMMANDLINE_LIST.get(id).setCommandLineStr(commandLineStr);
             fireTableCellUpdated(id, 3);
         });
     }
 
     public OptionsCommandLine getOptionsCommandLineById(int id) {
-        if (0 == optionsCommandLineList.size() || (0 > id || id >= optionsCommandLineList.size())) {
+        if (GlobalEnv.OPTIONS_COMMANDLINE_LIST.isEmpty() || (0 > id || id >= GlobalEnv.OPTIONS_COMMANDLINE_LIST.size())) {
             return null;
         }
 
-        return optionsCommandLineList.get(id);
-    }
-
-    public List<OptionsCommandLine> getOptionsCommandLineList() {
-        return optionsCommandLineList;
+        return GlobalEnv.OPTIONS_COMMANDLINE_LIST.get(id);
     }
 
     public boolean isTagExist(String tagStr) {
-        for (OptionsCommandLine optionsCommandLine : optionsCommandLineList) {
+        for (OptionsCommandLine optionsCommandLine : GlobalEnv.OPTIONS_COMMANDLINE_LIST) {
             if (optionsCommandLine.getTag().equals(tagStr)) {
                 return true;
             }

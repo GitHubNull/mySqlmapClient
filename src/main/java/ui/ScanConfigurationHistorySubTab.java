@@ -13,7 +13,7 @@ public class ScanConfigurationHistorySubTab extends JPanel {
     private JButton searchButton;
     private JScrollPane centerPanel;
     private JTable  table;
-    private HistoryCommandLineTableModel historyCommandLineTableModel;
+//    private HistoryCommandLineTableModel;
     private JPanel southPanel;
     private JButton deleteButton;
 
@@ -37,8 +37,8 @@ public class ScanConfigurationHistorySubTab extends JPanel {
         add(northPanel, BorderLayout.NORTH);
 
         table = new JTable();
-        historyCommandLineTableModel = GlobalEnv.HISTORY_COMMANDLINE_TABLE_MODEL;
-        table.setModel(historyCommandLineTableModel);
+//        historyCommandLineTableModel = GlobalEnv.HISTORY_COMMANDLINE_TABLE_MODEL;
+        table.setModel(GlobalEnv.HISTORY_COMMANDLINE_TABLE_MODEL);
         centerPanel = new JScrollPane(table);
 
         add(centerPanel, BorderLayout.CENTER);

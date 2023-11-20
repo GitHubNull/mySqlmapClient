@@ -12,7 +12,7 @@ public class FixedSizeList<E> extends ArrayList<E> {
     @Override
     public boolean add(E e) {
         if (size() >= maxSize) {
-            remove(0);
+                remove(0);
         }
         return super.add(e);
     }

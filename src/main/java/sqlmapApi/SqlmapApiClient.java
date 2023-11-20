@@ -37,43 +37,25 @@ public class SqlmapApiClient {
     }
 
     public void startScan(String commandLineStr, IHttpRequestResponse httpRequestResponse) {
-        BurpExtender.stdout.println("[INFO] sqlmapApiClient.startScan: commandLineStr: " + commandLineStr);
         Call call = sqlMapApiImpl.taskNew();
         if (call == null) {
-            BurpExtender.stderr
-                    .println("[ERROR] sqlmapApiClient.startScan: sqlMapApiImpl.taskNew() is null");
             return;
         }
-        BurpExtender.stdout
-                .println("[INFO] sqlmapApiClient.startScan: sqlMapApiImpl.taskNew() is not null");
-
 
         call.enqueue(new okhttp3.Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.body() == null){
-                    BurpExtender.stderr
-                            .println("[ERROR] sqlmapApiClient.startScan: response.body() is null");
                     return;
                 }
-
-                BurpExtender.stdout
-                        .println("[INFO] sqlmapApiClient.startScan: response.body() is not null");
 
                 TaskNewResponse taskNewResponse = JSON.parseObject(response.body().string(), TaskNewResponse.class);
                 if (!taskNewResponse.getSuccess()) {
-                    BurpExtender.stderr
-                            .println("[ERROR] sqlmapApiClient.startScan: taskNewResponse.getSuccess() is false");
                     return;
                 }
 
-                BurpExtender.stdout
-                        .println("[INFO] sqlmapApiClient.startScan: taskNewResponse.getSuccess() is true");
-
                 ScanConfiguration scanConfiguration;
                 try {
-                    BurpExtender.stdout
-                            .println("[INFO] sqlmapApiClient.startScan: scanConfiguration is null");
                     scanConfiguration = ScanConfigurationHelper.CommandLineToScanConfiguration(commandLineStr);
                 } catch (IllegalAccessException ex) {
                     BurpExtender.stderr.println(ex.getMessage());
@@ -81,11 +63,8 @@ public class SqlmapApiClient {
                 }
 
                 if (scanConfiguration == null){
-                    BurpExtender.stderr.println("scan configuration is null");
                     return;
                 }
-                BurpExtender.stdout.println(String.format("after parse command line to scan configuration: %s",  scanConfiguration));
-
 
                 // push task to sqlmapApi
                 if (null == scanConfiguration.getRequestFile() || scanConfiguration.getRequestFile().isEmpty()) {
@@ -140,7 +119,6 @@ public class SqlmapApiClient {
             }
         });
 
-        BurpExtender.stdout.println("call had called.");
     }
 
     public Call addScanTask(String taskId, ScanConfiguration scanConfiguration) {

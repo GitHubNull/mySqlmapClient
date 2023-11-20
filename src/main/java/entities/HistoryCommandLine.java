@@ -20,4 +20,6 @@ public class HistoryCommandLine implements Comparable<HistoryCommandLine>, Seria
         Integer id = this.getId();
         return id.compareTo(o.getId());
     }
+
+
 }
