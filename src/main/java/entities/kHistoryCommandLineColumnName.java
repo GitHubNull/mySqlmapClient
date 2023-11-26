@@ -1,9 +1,9 @@
 package entities;
 
 public enum kHistoryCommandLineColumnName {
-    ID("序号"),
+    ID("#"),
 
-    COMMAND_LINE_STR("参数(s)字符串");
+    COMMAND_LINE_STR("command line");
 
     private final String text;
 

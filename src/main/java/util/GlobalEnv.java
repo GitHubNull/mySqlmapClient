@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient;
 import org.apache.commons.cli.Options;
 import org.fife.ui.autocomplete.CompletionProvider;
 import sqlmapApi.SqlmapApiClient;
+import table_models.CommandLineTableModel;
 import table_models.HistoryCommandLineTableModel;
 
 import java.util.ArrayList;
@@ -28,13 +29,21 @@ public class GlobalEnv {
     public static final String HISTORY_COMMANDLINE_LIST_SETTING_KEY = "historyCommandlineList";
     public static final String OPTIONS_COMMANDLINE_LIST_SETTING_KEY = "optionsCommandLineList";
 
+    public static int  CommandLineTableModelId = 0;
+    public static int  HistoryCommandLineTableModelId = 0;
+
+
+
 
 //    public static List<String> scanConfigurationHistory = new ArrayList<>();
 
     public final static int MAX_HISTORY_COMMAND_LINE_LIST_LEN = 12; // max_history_command_line_list_len = 10
     public static List<HistoryCommandLine> HISTORY_COMMANDLINE_LIST = new ArrayList<>();
-    public static List<OptionsCommandLine>  OPTIONS_COMMANDLINE_LIST = new ArrayList<>(); // Options CommandLine list
+
     public static HistoryCommandLineTableModel HISTORY_COMMANDLINE_TABLE_MODEL = new HistoryCommandLineTableModel();
+
+    public static List<OptionsCommandLine>  OPTIONS_COMMANDLINE_LIST = new ArrayList<>(); // Options CommandLine list
+    public static CommandLineTableModel COMMON_COMMANDLINE_TABLE_MODEL = new CommandLineTableModel();
 
     public static Options OPTIONS = new Options(); // scan_options_parser_data
     public static String TMP_REQUEST_FILE_DIR_PATH = System.getProperty("java.io.tmpdir"); // tmp_Request_File_dir_Path

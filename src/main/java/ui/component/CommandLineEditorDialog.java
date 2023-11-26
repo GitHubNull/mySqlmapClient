@@ -27,19 +27,19 @@ public class CommandLineEditorDialog extends JDialog {
     public CommandLineEditorDialog(CommandLineTableModel commandLineTableModel, int id, Boolean enableEdit) {
         this.commandLineTableModel = commandLineTableModel;
         this.id = id;
-        optionsCommandLine = commandLineTableModel.getOptionsCommandLineById(id);
+        optionsCommandLine = commandLineTableModel.getOptionsCommandLineByRow(id);
         this.enableEdit = enableEdit;
         setLayout(new BorderLayout());
 
         if (enableEdit) {
-            setTitle("命令行参数编辑");
+            setTitle("edit  command line");
         } else {
-            setTitle("命令行参数详情");
+            setTitle("show command line");
         }
 
         tagPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        tagLabel = new JLabel("标签");
+        tagLabel = new JLabel("tag");
         tagTextField = new JTextField(optionsCommandLine.getTag());
         tagTextField.setEnabled(enableEdit);
 
@@ -50,7 +50,7 @@ public class CommandLineEditorDialog extends JDialog {
 
         commandLinePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        commandLineLabel = new JLabel("命令行参数");
+        commandLineLabel = new JLabel("command line");
         commandLineTextField = new JTextField(optionsCommandLine.getCommandLineStr(), 128);
         commandLineTextField.setEnabled(enableEdit);
 
@@ -61,13 +61,13 @@ public class CommandLineEditorDialog extends JDialog {
 
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        okBtn = new JButton("确定");
+        okBtn = new JButton("Ok");
         okBtn.setEnabled(enableEdit);
 
         if (enableEdit) {
-            cancelBtn = new JButton("取消");
+            cancelBtn = new JButton("Cancel");
         } else {
-            cancelBtn = new JButton("关闭");
+            cancelBtn = new JButton("Close");
         }
 
         buttonPanel.add(okBtn);
@@ -97,8 +97,8 @@ public class CommandLineEditorDialog extends JDialog {
             tagStr = tagStr.trim();
             commandLineStr = commandLineStr.trim();
 
-            commandLineTableModel.updateTagById(id, tagStr);
-            commandLineTableModel.updateCommandLinesById(id, commandLineStr);
+            commandLineTableModel.updateTagByRow(id, tagStr);
+            commandLineTableModel.updateCommandLinesByRow(id, commandLineStr);
 
             dispose();
         });

@@ -1,11 +1,11 @@
 package entities;
 
 public enum CommonCommandLineColumnName {
-    ID("序号"),
-    WAS_DEFAULT("是否是默认参数"),
-    TAG("标签"),
+    ID("#"),
+    WAS_DEFAULT("Is default"),
+    TAG("tag"),
 
-    COMMAND_LINE_STR("参数(s)字符串");
+    COMMAND_LINE_STR("command line");
 
     private final String text;
 

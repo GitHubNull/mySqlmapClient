@@ -1,11 +1,11 @@
 package ui.component;
 
 import entities.HistoryCommandLine;
+import entities.OptionsCommandLine;
 import excutors.ScanTasksWithConfigeAllTimeExecutor;
 import excutors.ScanTasksWithConfigeOneTimeExecutor;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
-import util.Autocomplete;
 import util.GlobalEnv;
 
 import javax.swing.*;
@@ -13,8 +13,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import static util.GlobalEnv.COMMIT_ACTION;
 
 public class ScanConfigurationDialog  extends JFrame {
 
@@ -81,6 +79,7 @@ public class ScanConfigurationDialog  extends JFrame {
             historys.add(String.format("[%d] %s", index, tmp));
         }
         historyComboBox = new JComboBox(historys.toArray());
+        historyComboBox.setSelectedIndex(historys.size() - 1);
         useHistoryButton = new JButton("Use");
 
         useHistoryButton.addActionListener(this::useHistoryButtonActionPerformed);
@@ -94,8 +93,9 @@ public class ScanConfigurationDialog  extends JFrame {
 
         upSubDownPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         commonLabel = new JLabel("Common Configuration:");
-        openCommonConfigurationDialogButton = new JButton("Open");
+        openCommonConfigurationDialogButton = new JButton("choose from common table");
 
+        openCommonConfigurationDialogButton.addActionListener(this::openCommonConfigurationDialogButtonActionPerformed);
 
         upSubDownPanel.add(commonLabel);
         upSubDownPanel.add(openCommonConfigurationDialogButton);
@@ -133,6 +133,32 @@ public class ScanConfigurationDialog  extends JFrame {
 
 
         add(downPanel, BorderLayout.SOUTH);
+    }
+
+    private void openCommonConfigurationDialogButtonActionPerformed(ActionEvent actionEvent) {
+        CommonConfigurationDialog commonConfigurationDialog = new CommonConfigurationDialog();
+        commonConfigurationDialog.okBnt.addActionListener(e->{
+            int selectRow = commonConfigurationDialog.table.getSelectedRow();
+            if (selectRow < 0){
+                commonConfigurationDialog.dispose();
+                return;
+            }
+            OptionsCommandLine optionsCommandLine = GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getOptionsCommandLineByRow(selectRow);
+            if (null == optionsCommandLine){
+                commonConfigurationDialog.dispose();
+                return;
+            }
+
+            String commandLineStr = optionsCommandLine.getCommandLineStr();
+            if (null == commandLineStr || commandLineStr.trim().isEmpty()){
+                commonConfigurationDialog.dispose();
+                return;
+            }
+
+            textArea.setText(commandLineStr);
+            commonConfigurationDialog.dispose();
+        });
+        commonConfigurationDialog.setVisible(true);
     }
 
     private void useHistoryButtonActionPerformed(ActionEvent actionEvent) {

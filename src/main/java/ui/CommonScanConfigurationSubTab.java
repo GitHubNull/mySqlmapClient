@@ -14,7 +14,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 public class CommonScanConfigurationSubTab extends JPanel {
     JPanel northPanel;
@@ -45,7 +44,6 @@ public class CommonScanConfigurationSubTab extends JPanel {
 
     JScrollPane centerPanel;
     JTable table;
-    CommandLineTableModel tableModel;
     TableRowSorter<CommandLineTableModel> sorter;
 
 
@@ -65,7 +63,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
         commandLineOperationPanel = new JPanel(new BorderLayout());
 
         tagContainerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        tagLabel = new JLabel("标签");
+        tagLabel = new JLabel("tag");
         tagTextField = new JTextField(32);
         tagContainerPanel.add(tagLabel);
         tagContainerPanel.add(tagTextField);
@@ -73,7 +71,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
         commandLineOperationPanel.add(tagContainerPanel, BorderLayout.NORTH);
 
         commandLineContainerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        commandLineLabel = new JLabel("参数");
+        commandLineLabel = new JLabel("commandline");
 
         commandLineTextField = new JTextField(64);
         commandLineTextField.setFocusTraversalKeysEnabled(false);
@@ -83,7 +81,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
 //        commandLineTextField.getActionMap().put(utils.GlobalStaticsVar.COMMIT_ACTION, autoComplete.new CommitAction());
 
 
-        scanOptionsHelperBtn = new JButton("参数列表帮助？");
+        scanOptionsHelperBtn = new JButton("help？");
 
         commandLineContainerPanel.add(commandLineLabel);
         commandLineContainerPanel.add(commandLineTextField);
@@ -92,8 +90,8 @@ public class CommonScanConfigurationSubTab extends JPanel {
         commandLineOperationPanel.add(commandLineContainerPanel, BorderLayout.CENTER);
 
         preOperationContainerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        addBtn = new JButton("新增");
-        resetBtn = new JButton("重置");
+        addBtn = new JButton("add");
+        resetBtn = new JButton("reset");
         preOperationContainerPanel.add(addBtn);
         preOperationContainerPanel.add(resetBtn);
 
@@ -103,7 +101,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
 
         filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        filterLabel = new JLabel("按照");
+        filterLabel = new JLabel("by");
 
         filterComboBox = new JComboBox<>();
         filterComboBox.addItem(CommonCommandLineColumnName.ID.toString());
@@ -112,8 +110,8 @@ public class CommonScanConfigurationSubTab extends JPanel {
 
         filterTextField = new JTextField("", 64);
 
-        filterBtn = new JButton("过滤");
-        configDefaultBtn = new JButton("设为默认命令行参数");
+        filterBtn = new JButton("filter");
+        configDefaultBtn = new JButton("set default commandline");
 
         filterPanel.add(filterLabel);
         filterPanel.add(filterComboBox);
@@ -129,10 +127,9 @@ public class CommonScanConfigurationSubTab extends JPanel {
 
 
         table = new JTable();
-        tableModel = new CommandLineTableModel();
-        table.setModel(tableModel);
+        table.setModel(GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL);
 
-        sorter = new TableRowSorter<>(tableModel);
+        sorter = new TableRowSorter<>(GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL);
         table.setRowSorter(sorter);
 
         centerPanel = new JScrollPane(table);
@@ -159,7 +156,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
     }
 
     private void filterTable() {
-        if (0 == tableModel.getRowCount()) {
+        if (0 == GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getRowCount()) {
             return;
         }
 
@@ -200,13 +197,13 @@ public class CommonScanConfigurationSubTab extends JPanel {
                 return;
             }
             // 校验tag是否重复,重复则不添加
-            if (tableModel.isTagExist(tagStr)) {
+            if (GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.isTagExist(tagStr)) {
                 return;
             }
 
             // todo 校验参数合法性
 
-            tableModel.addOptionsCommandLine(tagStr, argsStr);
+            GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.addOptionsCommandLine(tagStr, argsStr);
         });
 
         resetBtn.addActionListener(e -> {
@@ -222,7 +219,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
         filterBtn.addActionListener(this::actionPerformed);
 
         configDefaultBtn.addActionListener(e -> {
-            if (0 == tableModel.getRowCount()) {
+            if (0 == GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getRowCount()) {
                 return;
             }
             int[] rows = table.getSelectedRows();
@@ -232,7 +229,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
 
             int row = rows[0];
 
-            OptionsCommandLine optionsCommandLine = tableModel.getOptionsCommandLineById(row);
+            OptionsCommandLine optionsCommandLine = GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getOptionsCommandLineByRow(row);
             if (null == optionsCommandLine) {
                 return;
             }
@@ -243,7 +240,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
             }
 
             GlobalEnv.DEFAULT_COMMAND_LINE_STR = cmdLineStr;
-            tableModel.updateWasDefaultById(row, Boolean.TRUE);
+            GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.updateWasDefaultByRow(row, Boolean.TRUE);
         });
     }
 
@@ -256,7 +253,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
                 int col = table.getSelectedColumn();
 
 
-                if (CommonCommandLineColumnNameIndex.ID_INDEX == tableModel.getRowCount()) {
+                if (CommonCommandLineColumnNameIndex.ID_INDEX == GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getRowCount()) {
                     return;
                 }
 
@@ -265,36 +262,36 @@ public class CommonScanConfigurationSubTab extends JPanel {
                     return;
                 }
 
-                OptionsCommandLine optionsCommandLine = tableModel.getOptionsCommandLineById(selectRows[0]);
+                OptionsCommandLine optionsCommandLine = GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getOptionsCommandLineByRow(selectRows[0]);
                 if (null == optionsCommandLine) {
                     return;
                 }
 
                 if (0 == col) {
                     // 弹出参数详情
-                    CommandLineEditorDialog commandLineEditorDialog = new CommandLineEditorDialog(tableModel, selectRows[0], false);
+                    CommandLineEditorDialog commandLineEditorDialog = new CommandLineEditorDialog(GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL, selectRows[0], false);
                     commandLineEditorDialog.setVisible(true);
                 }
 
             }
         });
 
-        tableModel.addTableModelListener(e -> {
+        GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.addTableModelListener(e -> {
             int col = e.getColumn();
             if (CommonCommandLineColumnNameIndex.WAS_DEFAULT_INDEX != col) {
                 return;
             }
 
             int row = e.getFirstRow();
-            OptionsCommandLine optionsCommandLine0 = tableModel.getOptionsCommandLineById(row);
+            OptionsCommandLine optionsCommandLine0 = GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getOptionsCommandLineByRow(row);
             if (Boolean.FALSE.equals(optionsCommandLine0.getWasDefault())) {
                 int cnt = 0;
-                for (int i = 0; i < tableModel.getRowCount(); i++) {
-                    if (Boolean.FALSE.equals(tableModel.getOptionsCommandLineById(i).getWasDefault())) {
+                for (int i = 0; i < GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getRowCount(); i++) {
+                    if (Boolean.FALSE.equals(GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getOptionsCommandLineByRow(i).getWasDefault())) {
                         cnt++;
                     }
                 }
-                if (cnt == tableModel.getRowCount()) {
+                if (cnt == GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getRowCount()) {
                     GlobalEnv.DEFAULT_COMMAND_LINE_STR = "";
                 }
 
@@ -307,11 +304,11 @@ public class CommonScanConfigurationSubTab extends JPanel {
             }
 
             SwingUtilities.invokeLater(() -> {
-                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                for (int i = 0; i < GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getRowCount(); i++) {
                     if (i != row) {
-                        OptionsCommandLine optionsCommandLine = tableModel.getOptionsCommandLineById(i);
+                        OptionsCommandLine optionsCommandLine = GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getOptionsCommandLineByRow(i);
                         optionsCommandLine.setWasDefault(Boolean.FALSE);
-                        tableModel.fireTableCellUpdated(i, col);
+                        GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.fireTableCellUpdated(i, col);
                     }
                 }
             });
@@ -322,7 +319,7 @@ public class CommonScanConfigurationSubTab extends JPanel {
     private void initSouthBtnActionListening() {
         deleteBtn.addActionListener(e -> {
 
-            if (0 == tableModel.getRowCount()) {
+            if (0 == GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getRowCount()) {
                 return;
             }
 
@@ -332,12 +329,12 @@ public class CommonScanConfigurationSubTab extends JPanel {
             }
 
             for (int selectRow : selectRows) {
-                tableModel.deleteOptionsCommandLineById(selectRow);
+                GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.deleteOptionsCommandLineByRow(selectRow);
             }
         });
 
         updateBtn.addActionListener(e -> {
-            if (0 == tableModel.getRowCount()) {
+            if (0 == GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getRowCount()) {
                 return;
             }
 
@@ -346,13 +343,13 @@ public class CommonScanConfigurationSubTab extends JPanel {
                 return;
             }
 
-            OptionsCommandLine optionsCommandLine = tableModel.getOptionsCommandLineById(selectRows[0]);
+            OptionsCommandLine optionsCommandLine = GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getOptionsCommandLineByRow(selectRows[0]);
             if (null == optionsCommandLine) {
                 return;
             }
 
             // 弹出编辑页面
-            CommandLineEditorDialog commandLineEditorDialog = new CommandLineEditorDialog(tableModel, selectRows[0], true);
+            CommandLineEditorDialog commandLineEditorDialog = new CommandLineEditorDialog(GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL, selectRows[0], true);
             commandLineEditorDialog.setVisible(true);
 
         });
@@ -366,14 +363,6 @@ public class CommonScanConfigurationSubTab extends JPanel {
         initNorthBtnActionListening();
         initCenterBtnActionListening();
         initSouthBtnActionListening();
-    }
-
-//    public List<OptionsCommandLine> getOptionsCommandLineList() {
-//        return tableModel.getOptionsCommandLineList();
-//    }
-
-    public CommandLineTableModel getTableModel() {
-        return tableModel;
     }
 
 

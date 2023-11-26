@@ -10,8 +10,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class HistoryCommandLineTableModel extends AbstractTableModel {
-    private static int id = 1;
-//    private List<HistoryCommandLine> historyCommandlineList;
+    //    private List<HistoryCommandLine> historyCommandlineList;
     static final int STATIC_COLUMN_COUNT = 2;
 
 //    public HistoryCommandLineTableModel() {
@@ -25,7 +24,7 @@ public class HistoryCommandLineTableModel extends AbstractTableModel {
     public synchronized void addScanTaskHistoryCommandLine(String CommandLine) {
         int currentId = generateId();
         HistoryCommandLine historyCommandLine = new HistoryCommandLine(currentId, CommandLine);
-        if (GlobalEnv.HISTORY_COMMANDLINE_LIST.size() >= GlobalEnv.MAX_HISTORY_COMMAND_LINE_LIST_LEN){
+        if (GlobalEnv.HISTORY_COMMANDLINE_LIST.size() >= GlobalEnv.MAX_HISTORY_COMMAND_LINE_LIST_LEN) {
             GlobalEnv.HISTORY_COMMANDLINE_LIST.remove(0);
         }
         GlobalEnv.HISTORY_COMMANDLINE_LIST.add(historyCommandLine);
@@ -33,9 +32,8 @@ public class HistoryCommandLineTableModel extends AbstractTableModel {
     }
 
     private int generateId() {
-        int generatedId = id;
-        id = (id % 12) + 1;
-        return generatedId;
+        GlobalEnv.HistoryCommandLineTableModelId += 1;
+        return GlobalEnv.HistoryCommandLineTableModelId;
     }
 
     @Override
@@ -122,6 +120,35 @@ public class HistoryCommandLineTableModel extends AbstractTableModel {
         SwingUtilities.invokeLater(() -> {
             GlobalEnv.HISTORY_COMMANDLINE_LIST.remove(id);
             fireTableRowsDeleted(id, id);
+        });
+    }
+
+    public synchronized void deleteHistoryCommandLineByRowNumber(int rowNumber) {
+        if (GlobalEnv.HISTORY_COMMANDLINE_LIST.isEmpty() || (0 > rowNumber || rowNumber > GlobalEnv.HISTORY_COMMANDLINE_LIST.size())) {
+            return;
+        }
+
+        GlobalEnv.HISTORY_COMMANDLINE_LIST.remove(rowNumber);
+        SwingUtilities.invokeLater(() -> {
+            fireTableRowsDeleted(rowNumber, rowNumber);
+        });
+    }
+
+    public void deleteHistoryCommandLineByRowNumbers(int[] rowNumbers) {
+        if (GlobalEnv.HISTORY_COMMANDLINE_LIST.isEmpty() || (null == rowNumbers || 0 == rowNumbers.length || rowNumbers.length > GlobalEnv.HISTORY_COMMANDLINE_LIST.size())) {
+            return;
+        }
+
+        for (int rowNumber : rowNumbers) {
+            deleteHistoryCommandLineById(rowNumber);
+        }
+    }
+
+    public synchronized void clearAll() {
+        GlobalEnv.HISTORY_COMMANDLINE_LIST.clear();
+        GlobalEnv.HistoryCommandLineTableModelId = 0;
+        SwingUtilities.invokeLater(() -> {
+            fireTableDataChanged();
         });
     }
 

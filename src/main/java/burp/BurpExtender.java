@@ -17,7 +17,7 @@ public class BurpExtender implements IBurpExtender, ITab, IExtensionStateListene
     public static IExtensionHelpers helpers;
     public static PrintWriter stdout;
     public static PrintWriter stderr;
-    public final static String NAME = "SqlMap client";
+    public final static String NAME = "mySqlMapclient";
 
     public static ConsoleTab consoleTab;
 
@@ -113,6 +113,7 @@ public class BurpExtender implements IBurpExtender, ITab, IExtensionStateListene
         } catch (IOException e) {
             callbacks.printError("Failed to save history commandline list: " + e.getMessage());
         }
+        callbacks.saveExtensionSetting("HistoryCommandLineTableModelId", Integer.toString(GlobalEnv.HistoryCommandLineTableModelId));
     }
 
     private void loadHistoryCommandlineList() {
@@ -127,6 +128,15 @@ public class BurpExtender implements IBurpExtender, ITab, IExtensionStateListene
         } else {
             // 初始化一个空的历史命令行列表
             GlobalEnv.HISTORY_COMMANDLINE_LIST = new ArrayList<>();
+        }
+        String tmp = callbacks.loadExtensionSetting("HistoryCommandLineTableModelId");
+        if (tmp != null && !(tmp.trim().isEmpty())) {
+            try {
+                GlobalEnv.HistoryCommandLineTableModelId = Integer.parseInt(tmp.trim());
+            }catch (NumberFormatException e){
+                callbacks.printError("Failed to parse HistoryCommandLineTableModelId from setting: " + e.getMessage());
+                GlobalEnv.HistoryCommandLineTableModelId = GlobalEnv.HISTORY_COMMANDLINE_LIST.get(GlobalEnv.HISTORY_COMMANDLINE_LIST.size() - 1).getId() + 1;
+            }
         }
     }
 
@@ -156,6 +166,8 @@ public class BurpExtender implements IBurpExtender, ITab, IExtensionStateListene
         } catch (IOException e) {
             callbacks.printError("Failed to save options commandline list: " + e.getMessage());
         }
+
+        callbacks.saveExtensionSetting("CommandLineTableModelId", Integer.toString(GlobalEnv.CommandLineTableModelId));
     }
 
     private void loadOptionsCommandlineList() {
@@ -166,6 +178,16 @@ public class BurpExtender implements IBurpExtender, ITab, IExtensionStateListene
                 callbacks.printOutput("Options commandline list loaded successfully.");
             } catch (IOException | ClassNotFoundException e) {
                 callbacks.printError("Failed to load options commandline list: " + e.getMessage());
+            }
+        }
+        String tmp = callbacks.loadExtensionSetting("CommandLineTableModelId");
+        if (tmp != null && !(tmp.trim().isEmpty())) {
+            try {
+                GlobalEnv.CommandLineTableModelId = Integer.parseInt(tmp.trim());
+            }
+            catch (NumberFormatException e) {
+                BurpExtender.stderr.println("Failed to parse CommandLineTableModelId from settings: " + e.getMessage());
+                GlobalEnv.CommandLineTableModelId = GlobalEnv.HISTORY_COMMANDLINE_LIST.get(GlobalEnv.HISTORY_COMMANDLINE_LIST.size() - 1).getId() + 1;
             }
         }
     }
