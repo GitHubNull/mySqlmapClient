@@ -13,6 +13,8 @@ public interface SqlMapApi {
     // POST {{sqlmap_api}}/scan/{{taskid}}/start
     Call scanStart(String taskId, ScanConfiguration scanConfiguration);
 
+    Call scanStartWithStarDateTime(String taskId, ScanConfiguration scanConfiguration, String startDateTime);
+
     // delete task
     // GET {{sqlmap_api}}/task/{{taskid}}/delete
     Call taskDelete(String taskId);

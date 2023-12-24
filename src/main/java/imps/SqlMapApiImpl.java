@@ -5,6 +5,9 @@ import interfaces.SqlMapApi;
 import jsonModel.ScanConfiguration;
 import okhttp3.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SqlMapApiImpl  implements SqlMapApi {
     private String host;
     private int port;
@@ -53,6 +56,27 @@ public class SqlMapApiImpl  implements SqlMapApi {
         return requestBuilder.build();
     }
 
+    private Request buildRequestWithParams(String apiPath, String method, RequestBody requestBody, Map<String, String> params) {
+        // 构建带有查询参数的URL
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(genApiUrl(apiPath)).newBuilder();
+        if (params != null) {
+            for (Map.Entry<String, String> param : params.entrySet()) {
+                urlBuilder.addQueryParameter(param.getKey(), param.getValue());
+            }
+        }
+        String urlWithParams = urlBuilder.build().toString();
+
+        // 构建请求
+        Request.Builder requestBuilder = new Request.Builder().url(urlWithParams);
+        if (method.equalsIgnoreCase("GET")) {
+            requestBuilder.get();
+        } else {
+            requestBuilder.method(method, requestBody);
+        }
+
+        return requestBuilder.build();
+    }
+
     @Override
     public Call taskNew() {
         String apiPath = "/task/new";
@@ -64,6 +88,18 @@ public class SqlMapApiImpl  implements SqlMapApi {
         String json = JSON.toJSONString(scanConfiguration);
         RequestBody requestBody = RequestBody.create(json, JSON_TYPE);
         return okHttpClient.newCall(buildRequest(apiPath, "POST", requestBody));
+    }
+
+    public Call scanStartWithStarDateTime(String taskId, ScanConfiguration scanConfiguration, String startDateTime) {
+        String apiPath = String.format("/scan/start_at_datetime/%s", taskId);
+        String json = JSON.toJSONString(scanConfiguration);
+        RequestBody requestBody = RequestBody.create(json, JSON_TYPE);
+        if (startDateTime == null) {
+            return null;
+        }
+        Map<String, String> params = new HashMap<>();
+        params.put("start_datetime", startDateTime);
+        return okHttpClient.newCall(buildRequestWithParams(apiPath, "POST", requestBody, params));
     }
 
     @Override

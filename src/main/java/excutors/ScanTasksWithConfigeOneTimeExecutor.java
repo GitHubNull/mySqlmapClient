@@ -40,6 +40,31 @@ public class ScanTasksWithConfigeOneTimeExecutor implements TaskCallback {
     }
 
     @Override
+    public void onConfigCompleteAtDateTime(String result, String startDateTime) {
+        if (result == null || result.trim().isEmpty()){
+            BurpExtender.stderr.println("[!] onConfigCompleteAtDateTime result is null");
+            return;
+        }
+
+        stdout.println("[*] ScanTasksWithConfigeOneTimeExecutor.onConfigCompleteAtDateTime result:"+result);
+
+        SqlmapApiClient sqlmapApiClient = GlobalEnv.sqlmapApiClient;
+        if (sqlmapApiClient != null && sqlmapApiClient.isSqlMapApiImplSet()){
+            stdout.println("[*] ScanTasksWithConfigeOneTimeExecutor.onConfigCompleteAtDateTime sqlmapApiClient is set");
+            for (IHttpRequestResponse httpRequestResponse : httpRequestResponses) {
+//                stdout.println("[*] ScanTasksWithConfigeOneTimeExecutor.onConfigComplete httpRequestResponse:"+httpRequestResponse);
+                try {
+                    sqlmapApiClient.startScanWithStartDateTime(result, httpRequestResponse, startDateTime);
+                }catch (Exception e){
+                    BurpExtender.stderr.println("[!] onConfigCompleteAtDateTime error:"+e.getMessage());
+                }
+            }
+        }else {
+            BurpExtender.stderr.println("[!] sqlmapApiClient is null or not set");
+        }
+    }
+
+    @Override
     public void onConfigError(String error) {
         stdout.println("onConfigError error:"+error);
     }

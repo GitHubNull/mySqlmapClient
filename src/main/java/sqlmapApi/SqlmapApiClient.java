@@ -121,6 +121,83 @@ public class SqlmapApiClient {
 
     }
 
+    public void startScanWithStartDateTime(String commandLineStr, IHttpRequestResponse httpRequestResponse, String startDateTime) {
+        Call call = sqlMapApiImpl.taskNew();
+        if (call == null) {
+            return;
+        }
+        call.enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                BurpExtender.stderr.println(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.body() == null){
+                    return;
+                }
+
+                TaskNewResponse taskNewResponse = JSON.parseObject(response.body().string(), TaskNewResponse.class);
+                if (!taskNewResponse.getSuccess()) {
+                    return;
+                }
+
+                ScanConfiguration scanConfiguration;
+                try {
+                    scanConfiguration = ScanConfigurationHelper.CommandLineToScanConfiguration(commandLineStr);
+                } catch (IllegalAccessException e) {
+                    BurpExtender.stderr.println(e.getMessage());
+                    return;
+                }
+
+                if (scanConfiguration == null){
+                    return;
+                }
+                if (null == scanConfiguration.getRequestFile() || scanConfiguration.getRequestFile().isEmpty()) {
+                    final String tmpRequestFilePath = TmpRequestFileHelper.writeBytesToFile(httpRequestResponse.getRequest());
+                    if (null == tmpRequestFilePath) {
+                        Call call1 = deleteScanTask(taskNewResponse.getTaskid());
+                        if (null!= call1) {
+                            call1.enqueue(new Callback() {
+                                @Override
+                                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                    BurpExtender.stderr.println(e.getMessage());
+                                }
+
+                                @Override
+                                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                    assert response.body()!= null;
+                                }
+                            });
+                        }
+                    }
+                    scanConfiguration.setRequestFile(tmpRequestFilePath);
+                }
+
+                Call call2 = sqlMapApiImpl.scanStartWithStarDateTime(taskNewResponse.getTaskid(), scanConfiguration, startDateTime);
+                if (null!= call2) {
+                    call2.enqueue(new Callback() {
+                        @Override
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            BurpExtender.stderr.println(e.getMessage());
+                        }
+
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException{
+                            if (response.body()!= null && response.body().contentLength() > 0) {
+                                BurpExtender.stdout.println(response.body().string());
+                                GlobalEnv.HISTORY_COMMANDLINE_TABLE_MODEL.addScanTaskHistoryCommandLine(commandLineStr);
+                            } else {
+                                BurpExtender.stdout.println("response is null");
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     public Call addScanTask(String taskId, ScanConfiguration scanConfiguration) {
         if ((null == taskId || taskId.trim().isEmpty()) || (null == scanConfiguration)) {
             return null;
