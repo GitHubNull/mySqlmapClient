@@ -4,7 +4,6 @@ import entities.HistoryCommandLine;
 import entities.OptionsCommandLine;
 import okhttp3.OkHttpClient;
 import org.apache.commons.cli.Options;
-import org.fife.ui.autocomplete.CompletionProvider;
 import sqlmapApi.SqlmapApiClient;
 import table_models.CommandLineTableModel;
 import table_models.HistoryCommandLineTableModel;
@@ -24,7 +23,7 @@ public class GlobalEnv {
     public static String SCAN_OPTIONS_HELP_TEXT = "";
 
     public static List<String> OPTIONS_KEYWORDS = new ArrayList<>(); // options_keywords
-    public static CompletionProvider provider;
+//    public static CompletionProvider provider;
 
     public static final String HISTORY_COMMANDLINE_LIST_SETTING_KEY = "historyCommandlineList";
     public static final String OPTIONS_COMMANDLINE_LIST_SETTING_KEY = "optionsCommandLineList";
@@ -58,7 +57,7 @@ public class GlobalEnv {
 
     static {
         init();
-        provider = CompletionProviderInitiator.createCompletionProvider();
+//        provider = CompletionProviderInitiator.createCompletionProvider();
     }
 
     public static void init() {

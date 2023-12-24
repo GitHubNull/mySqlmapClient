@@ -4,58 +4,64 @@ import entities.HistoryCommandLine;
 import entities.OptionsCommandLine;
 import excutors.ScanTasksWithConfigeAllTimeExecutor;
 import excutors.ScanTasksWithConfigeOneTimeExecutor;
-import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.autocomplete.CompletionProvider;
 import util.GlobalEnv;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScanConfigurationDialog  extends JFrame {
+@SuppressWarnings("FieldMayBeFinal")
+public class ScanConfigurationDialog extends JDialog {
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    private  JPanel upPanel;
+    private JPanel upPanel;
     private JPanel upSubUpPanel;
     private JLabel historyLabel;
-    private JComboBox historyComboBox;
-    private JButton  useHistoryButton;
+    private JComboBox<String> historyComboBox;
+    private JButton useHistoryButton;
     private JPanel upSubDownPanel;
     private JLabel commonLabel;
     private JButton openCommonConfigurationDialogButton;
 
-    private   JScrollPane centerPanel;
+    private JScrollPane centerPanel;
     private JTextArea textArea;
 
-    private  JPanel downPanel;
+    private JPanel downPanel;
 
+    private JButton dateTimePickerButton;
+    LocalDate date;
+    LocalTime time;
+    //    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String start_datetime;
     private JButton buttonOK;
     private JButton buttonCancel;
 
-    enum  ScanConfigurationDialogType {
+    enum ScanConfigurationDialogType {
         ONE_TIME, ALL_TIME
     }
 
-    private ScanConfigurationDialogType  scanConfigurationDialogType;
+    private ScanConfigurationDialogType scanConfigurationDialogType;
 
 
     ScanTasksWithConfigeOneTimeExecutor scanTasksWithConfigeOneTimeExecutor;
     private ScanTasksWithConfigeAllTimeExecutor scanTasksWithConfigeAllTimeExecutor;
 
     public ScanConfigurationDialog(ScanTasksWithConfigeOneTimeExecutor scanTasksWithConfigeOneTimeExecutor) {
-        this.scanTasksWithConfigeOneTimeExecutor =  scanTasksWithConfigeOneTimeExecutor;
+        this.scanTasksWithConfigeOneTimeExecutor = scanTasksWithConfigeOneTimeExecutor;
         scanConfigurationDialogType = ScanConfigurationDialogType.ONE_TIME;
         initComponents();
     }
 
     public ScanConfigurationDialog(ScanTasksWithConfigeAllTimeExecutor scanTasksWithConfigeAllTimeExecutor) {
-        this.scanTasksWithConfigeAllTimeExecutor =  scanTasksWithConfigeAllTimeExecutor;
+        this.scanTasksWithConfigeAllTimeExecutor = scanTasksWithConfigeAllTimeExecutor;
         scanConfigurationDialogType = ScanConfigurationDialogType.ALL_TIME;
         initComponents();
     }
@@ -72,13 +78,13 @@ public class ScanConfigurationDialog  extends JFrame {
         int index = 0;
         for (HistoryCommandLine historyCommandLine : GlobalEnv.HISTORY_COMMANDLINE_LIST) {
             String tmp = historyCommandLine.getCommandLineStr();
-            if(tmp.length() > 32) {
+            if (tmp.length() > 32) {
                 tmp = tmp.substring(0, 32) + "...";
             }
             index++;
             historys.add(String.format("[%d] %s", index, tmp));
         }
-        historyComboBox = new JComboBox(historys.toArray());
+        historyComboBox = new JComboBox<>(historys.toArray(new String[0]));
         historyComboBox.setSelectedIndex(historys.size() - 1);
         useHistoryButton = new JButton("Use");
 
@@ -113,21 +119,34 @@ public class ScanConfigurationDialog  extends JFrame {
 //        textField.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
 //        textField.getActionMap().put(COMMIT_ACTION, autoComplete.new CommitAction());
 
-        CompletionProvider provider = GlobalEnv.provider;
-        AutoCompletion ac = new AutoCompletion(provider);
-        ac.install(textArea);
+//        CompletionProvider provider = GlobalEnv.provider;
+//        AutoCompletion ac = new AutoCompletion(provider);
+//        ac.install(textArea);
 
         centerPanel = new JScrollPane(textArea);
 
         add(centerPanel, BorderLayout.CENTER);
 
         downPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+//        ImageIcon icon = new ImageIcon(BurpExtender.class.getResource("/icons/datetimePicker.png"));
+//        if (icon != null){
+//            dateTimePickerButton = new JButton(icon);
+//        }else{
+//            dateTimePickerButton = new JButton("Pick Date Time");
+//        }
+
+        dateTimePickerButton = new JButton("Pick Date Time");
+        start_datetime = "";
+        date = LocalDate.now();
+        time = LocalTime.now();
         buttonOK = new JButton("OK");
         buttonCancel = new JButton("Cancel");
 
+        dateTimePickerButton.addActionListener(this::dateTimePickerButtonPerformAction);
         buttonOK.addActionListener(this::buttonOKPerformAction);
         buttonCancel.addActionListener(this::buttonCancelPerformAction);
 
+        downPanel.add(dateTimePickerButton);
         downPanel.add(buttonOK);
         downPanel.add(buttonCancel);
 
@@ -135,22 +154,63 @@ public class ScanConfigurationDialog  extends JFrame {
         add(downPanel, BorderLayout.SOUTH);
     }
 
+    private void dateTimePickerButtonPerformAction(ActionEvent actionEvent) {
+        MyDateTimePicker myDateTimePicker = new MyDateTimePicker(ScanConfigurationDialog.this);
+        myDateTimePicker.okButton.addActionListener(e->{
+            if (myDateTimePicker.getFormatDateTime()!= null) {
+                start_datetime = myDateTimePicker.getFormatDateTime();
+            }
+        });
+        myDateTimePicker.setVisible(true);
+//        myDateTimePicker.setDialogListener(dateTime -> {
+//            start_datetime = dateTime;
+//        });
+
+//        TaskStarDateTimePicker taskStarDateTimePicker = new TaskStarDateTimePicker(ScanConfigurationDialog.this);
+//        taskStarDateTimePicker.dateTimePicker.addDateTimeChangeListener(new DateTimeChangeListener() {
+//            @Override
+//            public void dateOrTimeChanged(DateTimeChangeEvent dateTimeChangeEvent) {
+//                DateChangeEvent dateEvent = dateTimeChangeEvent.getDateChangeEvent();
+//                if (dateEvent != null) {
+////                    String dateChangeMessage = "\nThe DatePicker value has changed from (" + dateEvent.getOldDate() + ") to (" + dateEvent.getNewDate() + ").";
+//                    date = dateEvent.getNewDate();
+////                    System.out.println(dateChangeMessage);
+//                }
+//                TimeChangeEvent timeEvent = dateTimeChangeEvent.getTimeChangeEvent();
+//                if (timeEvent != null) {
+////                    String timeChangeMessage = "\nThe TimePicker value has changed from (" + timeEvent.getOldTime() + ") to (" + timeEvent.getNewTime() + ").";
+//                    time = timeEvent.getNewTime();
+////                    System.out.println(timeChangeMessage);
+//                }
+//                // 将 LocalDate 和 LocalTime 组合成 LocalDateTime
+//                LocalDateTime dateTime = LocalDateTime.of(date, time);
+//
+//                // 格式化 LocalDateTime
+//                start_datetime = dateTime.format(formatter);
+//
+//                // 输出格式化的日期时间
+//                BurpExtender.stdout.println("start_datetime: " +start_datetime);
+//            }
+//        });
+//        taskStarDateTimePicker.setVisible(true);
+    }
+
     private void openCommonConfigurationDialogButtonActionPerformed(ActionEvent actionEvent) {
         CommonConfigurationDialog commonConfigurationDialog = new CommonConfigurationDialog();
-        commonConfigurationDialog.okBnt.addActionListener(e->{
+        commonConfigurationDialog.okBnt.addActionListener(e -> {
             int selectRow = commonConfigurationDialog.table.getSelectedRow();
-            if (selectRow < 0){
+            if (selectRow < 0) {
                 commonConfigurationDialog.dispose();
                 return;
             }
             OptionsCommandLine optionsCommandLine = GlobalEnv.COMMON_COMMANDLINE_TABLE_MODEL.getOptionsCommandLineByRow(selectRow);
-            if (null == optionsCommandLine){
+            if (null == optionsCommandLine) {
                 commonConfigurationDialog.dispose();
                 return;
             }
 
             String commandLineStr = optionsCommandLine.getCommandLineStr();
-            if (null == commandLineStr || commandLineStr.trim().isEmpty()){
+            if (null == commandLineStr || commandLineStr.trim().isEmpty()) {
                 commonConfigurationDialog.dispose();
                 return;
             }
@@ -168,18 +228,18 @@ public class ScanConfigurationDialog  extends JFrame {
         }
 
         HistoryCommandLine historyCommandLine = GlobalEnv.HISTORY_COMMANDLINE_LIST.get(selectedIndex);
-        if (historyCommandLine == null){
+        if (historyCommandLine == null) {
             return;
         }
 
         String history = historyCommandLine.getCommandLineStr();
-        if(history == null ||  history.trim().isEmpty()){
+        if (history == null || history.trim().isEmpty()) {
             return;
         }
         textArea.setText(history);
     }
 
-    public void showDialog(){
+    public void showDialog() {
         pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -188,30 +248,42 @@ public class ScanConfigurationDialog  extends JFrame {
     }
 
     private void buttonOKPerformAction(ActionEvent e) {
-        if (textArea ==  null || textArea.getText().trim().isEmpty()){
+        if (textArea == null || textArea.getText().trim().isEmpty()) {
             dispose();
             return;
         }
 
         String commandLineStr = textArea.getText().trim();
         commandLineStr = commandLineStr.replaceAll("\\n", "");
-        if (commandLineStr.isEmpty()){
+        if (commandLineStr.isEmpty()) {
             dispose();
             return;
         }
 
-        if (scanConfigurationDialogType == ScanConfigurationDialogType.ONE_TIME
-                && scanTasksWithConfigeOneTimeExecutor != null){
-            scanTasksWithConfigeOneTimeExecutor.onConfigComplete(commandLineStr);
-        } else if (scanConfigurationDialogType == ScanConfigurationDialogType.ALL_TIME &&
-                        scanTasksWithConfigeAllTimeExecutor != null) {
-            scanTasksWithConfigeAllTimeExecutor.onConfigComplete(commandLineStr);
+        if (start_datetime == null || start_datetime.trim().isEmpty()) {
+            if (scanConfigurationDialogType == ScanConfigurationDialogType.ONE_TIME
+                    && scanTasksWithConfigeOneTimeExecutor != null) {
+                scanTasksWithConfigeOneTimeExecutor.onConfigComplete(commandLineStr);
+            } else if (scanConfigurationDialogType == ScanConfigurationDialogType.ALL_TIME &&
+                    scanTasksWithConfigeAllTimeExecutor != null) {
+                scanTasksWithConfigeAllTimeExecutor.onConfigComplete(commandLineStr);
+            }
+
+        } else {
+            if (scanConfigurationDialogType == ScanConfigurationDialogType.ONE_TIME
+                    && scanTasksWithConfigeOneTimeExecutor != null) {
+                scanTasksWithConfigeOneTimeExecutor.onConfigCompleteAtDateTime(commandLineStr, start_datetime);
+            } else if (scanConfigurationDialogType == ScanConfigurationDialogType.ALL_TIME &&
+                    scanTasksWithConfigeAllTimeExecutor != null) {
+                scanTasksWithConfigeAllTimeExecutor.onConfigCompleteAtDateTime(commandLineStr, start_datetime);
+            }
         }
+
+
         dispose();
     }
 
-    private
-    void buttonCancelPerformAction(ActionEvent e) {
+    private void buttonCancelPerformAction(ActionEvent e) {
         dispose();
     }
 }

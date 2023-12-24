@@ -1,10 +1,5 @@
 package util;
 
-import burp.BurpExtender;
-import org.fife.ui.autocomplete.BasicCompletion;
-import org.fife.ui.autocomplete.CompletionProvider;
-import org.fife.ui.autocomplete.DefaultCompletionProvider;
-
 public class CompletionProviderInitiator {
     private final static String[] params = new String[]{
             "current-user",
@@ -116,21 +111,21 @@ public class CompletionProviderInitiator {
 //          "wizard"
     };
 
-    public static CompletionProvider createCompletionProvider() {
-        BurpExtender.stdout.println("Creating completion provider...");
-        DefaultCompletionProvider provider = new DefaultCompletionProvider();
-
-        for (String param : params) {
-            param = param.trim();
-            if (param.isEmpty() || param.length() < 2){
-                continue;
-            }
-
-            provider.addCompletion(new BasicCompletion(provider, param));
-        }
-
-        BurpExtender.stdout.println("Completion provider created.");
-
-        return provider;
-    }
+//    public static CompletionProvider createCompletionProvider() {
+//        BurpExtender.stdout.println("Creating completion provider...");
+//        DefaultCompletionProvider provider = new DefaultCompletionProvider();
+//
+//        for (String param : params) {
+//            param = param.trim();
+//            if (param.isEmpty() || param.length() < 2){
+//                continue;
+//            }
+//
+//            provider.addCompletion(new BasicCompletion(provider, param));
+//        }
+//
+//        BurpExtender.stdout.println("Completion provider created.");
+//
+//        return provider;
+//    }
 }

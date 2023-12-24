@@ -56,6 +56,7 @@ public class ContextMenuFactory  implements IContextMenuFactory {
         for (IHttpRequestResponse httpRequestResponse : httpRequestResponses) {
             ScanTasksWithConfigeAllTimeExecutor scanTaskWithConfigeAllTime = new ScanTasksWithConfigeAllTimeExecutor(httpRequestResponse);
             ScanConfigurationDialog scanConfigurationDialog = new ScanConfigurationDialog(scanTaskWithConfigeAllTime);
+            scanConfigurationDialog.setModal(true);
             scanConfigurationDialog.showDialog();
         }
     }
