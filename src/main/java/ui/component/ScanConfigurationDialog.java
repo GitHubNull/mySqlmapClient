@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class ScanConfigurationDialog extends JDialog {
@@ -135,7 +136,19 @@ public class ScanConfigurationDialog extends JDialog {
 //            dateTimePickerButton = new JButton("Pick Date Time");
 //        }
 
-        dateTimePickerButton = new JButton("Pick Date Time");
+        // 加载原始图标
+        ImageIcon originalIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/icons/datetimePicker.png")));
+
+        // 获取按钮的理想尺寸
+        int buttonWidth = 24;
+        int buttonHeight = 24;
+
+        // 调整图标尺寸
+        Image originalImage = originalIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+        dateTimePickerButton = new JButton(resizedIcon);
         start_datetime = "";
         date = LocalDate.now();
         time = LocalTime.now();
