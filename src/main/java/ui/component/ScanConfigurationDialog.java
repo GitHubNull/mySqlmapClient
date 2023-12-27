@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("FieldMayBeFinal")
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class ScanConfigurationDialog extends JDialog {
 
     /**
@@ -25,7 +25,6 @@ public class ScanConfigurationDialog extends JDialog {
 
     private JPanel upPanel;
     private JPanel upSubUpPanel;
-    private JLabel historyLabel;
     private JComboBox<String> historyComboBox;
     private JButton useHistoryButton;
     private JPanel upSubDownPanel;
@@ -74,7 +73,7 @@ public class ScanConfigurationDialog extends JDialog {
         upPanel = new JPanel(new BorderLayout());
 
         upSubUpPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        historyLabel = new JLabel("Select history:");
+        JLabel historyLabel = new JLabel("Select history:");
         List<String> historys = new ArrayList<>();
         int index = 0;
         for (HistoryCommandLine historyCommandLine : GlobalEnv.HISTORY_COMMANDLINE_LIST) {
