@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("FieldMayBeFinal")
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class ScanConfigurationDialog extends JDialog {
 
     /**
@@ -25,7 +25,6 @@ public class ScanConfigurationDialog extends JDialog {
 
     private JPanel upPanel;
     private JPanel upSubUpPanel;
-    private JLabel historyLabel;
     private JComboBox<String> historyComboBox;
     private JButton useHistoryButton;
     private JPanel upSubDownPanel;
@@ -74,7 +73,7 @@ public class ScanConfigurationDialog extends JDialog {
         upPanel = new JPanel(new BorderLayout());
 
         upSubUpPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        historyLabel = new JLabel("Select history:");
+        JLabel historyLabel = new JLabel("Select history:");
         List<String> historys = new ArrayList<>();
         int index = 0;
         for (HistoryCommandLine historyCommandLine : GlobalEnv.HISTORY_COMMANDLINE_LIST) {
@@ -112,6 +111,9 @@ public class ScanConfigurationDialog extends JDialog {
         add(upPanel, BorderLayout.NORTH);
 
         textArea = new JTextArea();
+        if (!historys.isEmpty()){
+            textArea.setText(GlobalEnv.HISTORY_COMMANDLINE_LIST.get(historys.size() - 1).getCommandLineStr());
+        }
         textArea.setRows(2);
 
 //        textField.setFocusTraversalKeysEnabled(false);
@@ -165,6 +167,16 @@ public class ScanConfigurationDialog extends JDialog {
 
 
         add(downPanel, BorderLayout.SOUTH);
+        // 设置默认的关闭操作
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // 使窗口可调整大小
+        setResizable(true);
+
+        pack();
+
+        // 设置窗口的位置
+        setLocationRelativeTo(null);
     }
 
     private void dateTimePickerButtonPerformAction(ActionEvent actionEvent) {
@@ -253,7 +265,7 @@ public class ScanConfigurationDialog extends JDialog {
     }
 
     public void showDialog() {
-        pack();
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 //        setModal(true);
