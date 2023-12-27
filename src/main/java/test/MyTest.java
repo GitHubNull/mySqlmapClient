@@ -1,6 +1,5 @@
 package test;
 
-import javax.swing.*;
 import java.net.URL;
 
 public class MyTest {
@@ -8,7 +7,6 @@ public class MyTest {
         URL resource = MyTest.class.getResource("/icons/datetimePicker.png");
         if (resource == null) {
             throw new IllegalStateException("Icon not found");
-        } else {
         }
     }
 }

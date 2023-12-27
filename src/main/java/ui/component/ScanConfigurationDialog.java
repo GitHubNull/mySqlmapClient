@@ -21,7 +21,7 @@ public class ScanConfigurationDialog extends JDialog {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 9003924762653792586L;
 
     private JPanel upPanel;
     private JPanel upSubUpPanel;
