@@ -112,6 +112,9 @@ public class ScanConfigurationDialog extends JDialog {
         add(upPanel, BorderLayout.NORTH);
 
         textArea = new JTextArea();
+        if (historys.size() > 0){
+            textArea.setText(GlobalEnv.HISTORY_COMMANDLINE_LIST.get(historys.size() - 1).getCommandLineStr());
+        }
         textArea.setRows(2);
 
 //        textField.setFocusTraversalKeysEnabled(false);
@@ -165,6 +168,16 @@ public class ScanConfigurationDialog extends JDialog {
 
 
         add(downPanel, BorderLayout.SOUTH);
+        // 设置默认的关闭操作
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // 使窗口可调整大小
+        setResizable(true);
+
+        pack();
+
+        // 设置窗口的位置
+        setLocationRelativeTo(null);
     }
 
     private void dateTimePickerButtonPerformAction(ActionEvent actionEvent) {
@@ -253,7 +266,7 @@ public class ScanConfigurationDialog extends JDialog {
     }
 
     public void showDialog() {
-        pack();
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 //        setModal(true);
