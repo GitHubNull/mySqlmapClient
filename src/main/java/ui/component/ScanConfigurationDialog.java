@@ -112,7 +112,7 @@ public class ScanConfigurationDialog extends JDialog {
         add(upPanel, BorderLayout.NORTH);
 
         textArea = new JTextArea();
-        if (historys.size() > 0){
+        if (!historys.isEmpty()){
             textArea.setText(GlobalEnv.HISTORY_COMMANDLINE_LIST.get(historys.size() - 1).getCommandLineStr());
         }
         textArea.setRows(2);
